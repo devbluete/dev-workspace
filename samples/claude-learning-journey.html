@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Learning Journey · itonic advisors</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <style>
+    :root {
+      --blue-deep: #055F7D;
+      --blue-mid: #077FA9;
+      --blue-light: #2DB4D2;
+      --blue-pale: #AAE0E8;
+      --gray-dark: #53585F;
+      --gray-mid: #7F7F7F;
+      --gray-light: #C4C7CB;
+      --white: #FFFFFF;
+      --red: #C0392B;
+      --yellow: #D4860A;
+      --green: #27864A;
+      --bg: #F4F6F8;
+      font-family: "Tahoma", "Geneva", sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bg); font-family: "Tahoma", "Geneva", sans-serif; }
+    #root { min-height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    const ItonicSignet = () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190.17 141.78" style={{width:"36px",height:"auto"}}>
+        <defs><style>{`.s1{fill:none}.s2{fill:#065d7e}.s3{fill:#087190}.s4{fill:#2cb3d2}.s5{fill:#1085a5}.s6{fill:#1b9bbb}`}</style></defs>
+        <g><g><rect className="s1" width="190.17" height="141.78"/>
+        <circle className="s2" cx="97.24" cy="61.16" r="4.15"/><circle className="s2" cx="95.09" cy="70.88" r="4.15"/><circle className="s2" cx="92.93" cy="80.6" r="4.15"/>
+        <circle className="s3" cx="99.4" cy="51.44" r="2.49"/><circle className="s3" cx="89.68" cy="51.44" r="2.49"/><circle className="s3" cx="109.11" cy="51.44" r="2.49"/><circle className="s3" cx="87.52" cy="61.16" r="2.49"/><circle className="s3" cx="85.37" cy="70.88" r="2.49"/><circle className="s3" cx="83.22" cy="80.6" r="2.49"/><circle className="s3" cx="81.06" cy="90.31" r="2.49"/><circle className="s3" cx="90.78" cy="90.31" r="2.49"/><circle className="s3" cx="100.5" cy="90.31" r="2.49"/><circle className="s3" cx="102.65" cy="80.6" r="2.49"/><circle className="s3" cx="104.8" cy="70.88" r="2.49"/><circle className="s3" cx="106.96" cy="61.16" r="2.49"/>
+        <circle className="s4" cx="64.84" cy="32.01" r=".83"/><circle className="s4" cx="74.55" cy="32.01" r=".83"/><circle className="s4" cx="84.27" cy="32.01" r=".83"/><circle className="s4" cx="93.99" cy="32.01" r=".83"/><circle className="s4" cx="103.7" cy="32.01" r=".83"/><circle className="s4" cx="113.42" cy="32.01" r=".83"/><circle className="s4" cx="123.14" cy="32.01" r=".83"/><circle className="s4" cx="132.85" cy="32.01" r=".83"/><circle className="s4" cx="142.57" cy="32.01" r=".83"/><circle className="s4" cx="140.42" cy="41.73" r=".83"/><circle className="s4" cx="138.26" cy="51.44" r=".83"/><circle className="s4" cx="136.11" cy="61.16" r=".83"/><circle className="s4" cx="133.95" cy="70.88" r=".83"/><circle className="s4" cx="131.8" cy="80.6" r=".83"/><circle className="s4" cx="129.65" cy="90.31" r=".83"/><circle className="s4" cx="127.49" cy="100.03" r=".83"/><circle className="s4" cx="125.34" cy="109.75" r=".83"/><circle className="s4" cx="115.62" cy="109.75" r=".83"/><circle className="s4" cx="105.9" cy="109.77" r=".83"/><circle className="s4" cx="96.19" cy="109.75" r=".83"/><circle className="s4" cx="86.47" cy="109.77" r=".83"/><circle className="s4" cx="76.75" cy="109.77" r=".83"/><circle className="s4" cx="67.04" cy="109.77" r=".83"/><circle className="s4" cx="57.32" cy="109.77" r=".83"/><circle className="s4" cx="47.6" cy="109.77" r=".83"/><circle className="s4" cx="49.76" cy="100.03" r=".83"/><circle className="s4" cx="59.47" cy="100.03" r=".83"/><circle className="s4" cx="69.19" cy="100.03" r=".83"/><circle className="s4" cx="61.63" cy="90.31" r=".83"/><circle className="s4" cx="51.91" cy="90.33" r=".83"/><circle className="s4" cx="54.06" cy="80.6" r=".83"/><circle className="s4" cx="56.22" cy="70.88" r=".83"/><circle className="s4" cx="58.37" cy="61.16" r=".83"/><circle className="s4" cx="60.53" cy="51.44" r=".83"/><circle className="s4" cx="70.24" cy="51.44" r=".83"/><circle className="s4" cx="72.4" cy="41.73" r=".83"/><circle className="s4" cx="82.12" cy="41.73" r=".83"/><circle className="s4" cx="62.68" cy="41.73" r=".83"/><circle className="s4" cx="117.77" cy="100.03" r=".83"/><circle className="s4" cx="108.06" cy="100.03" r=".83"/><circle className="s4" cx="119.93" cy="90.31" r=".83"/><circle className="s4" cx="128.55" cy="51.44" r=".83"/><circle className="s4" cx="130.7" cy="41.73" r=".83"/><circle className="s4" cx="120.98" cy="41.73" r=".83"/>
+        <circle className="s5" cx="77.81" cy="61.16" r="1.66"/><circle className="s5" cx="75.65" cy="70.88" r="1.66"/><circle className="s5" cx="73.5" cy="80.6" r="1.66"/><circle className="s5" cx="112.37" cy="80.6" r="1.66"/><circle className="s5" cx="114.52" cy="70.88" r="1.66"/><circle className="s5" cx="116.67" cy="61.16" r="1.66"/>
+        <circle className="s6" cx="101.55" cy="41.73" r="1.66"/><circle className="s6" cx="91.83" cy="41.73" r="1.66"/><circle className="s6" cx="111.27" cy="41.73" r="1.66"/><circle className="s6" cx="79.96" cy="51.44" r="1.66"/><circle className="s6" cx="71.34" cy="90.31" r="1.66"/><circle className="s6" cx="110.21" cy="90.31" r="1.66"/><circle className="s6" cx="78.91" cy="100.03" r="1.66"/><circle className="s6" cx="88.62" cy="100.03" r="1.66"/><circle className="s6" cx="98.34" cy="100.03" r="1.66"/><circle className="s6" cx="126.39" cy="61.16" r="1.24"/><circle className="s6" cx="68.09" cy="61.16" r="1.24"/><circle className="s6" cx="65.94" cy="70.88" r="1.24"/><circle className="s6" cx="63.78" cy="80.6" r="1.24"/><circle className="s6" cx="124.24" cy="70.9" r="1.24"/><circle className="s6" cx="122.08" cy="80.6" r="1.24"/><circle className="s6" cx="118.83" cy="51.44" r="1.66"/>
+        </g></g>
+      </svg>
+    );
+
+    const tools = [
+      {
+        id: "claude", name: "Claude", subtitle: "KI-Denkpartner", tag: "Chat", icon: "✦",
+        levels: [
+          {
+            level: "Einstieg", badge: "01", duration: "Woche 1–2",
+            goal: "Grundlegende Prompting-Prinzipien verstehen und erste Zeitersparnis erleben.",
+            tasks: [
+              {
+                title: "Stakeholder-E-Mail verfassen", time: "15 Min",
+                learn: "Klare Aufgabe + Kontext + Zielgruppe = qualitativ hochwertiges Ergebnis",
+                prompt: "Ich bin Unternehmensberaterin und muss einem Kunden (CFO eines Mittelständlers) erklären, warum sich der Projektstart um 2 Wochen verzögert. Grund: fehlende Datenzugänge auf Kundenseite. Schreibe eine professionelle E-Mail, die die Verzögerung klar kommuniziert, ohne den Kunden zu beschuldigen, und einen konkreten nächsten Schritt vorschlägt.",
+              },
+              {
+                title: "Strategiebericht zusammenfassen", time: "20 Min",
+                learn: "Dokument hochladen + strukturierte Ausgabe mit Zitaten anfordern",
+                prompt: "Ich habe einen 40-seitigen Strategiebericht eines Kunden (Maschinenbau, B2B). Fasse die wichtigsten 5 strategischen Herausforderungen in maximal 3 Sätzen pro Punkt zusammen. Zitiere jeweils den relevanten Abschnitt. [Dokument hier einfügen]",
+              },
+              {
+                title: "Kick-off-Agenda erstellen", time: "10 Min",
+                learn: "Kontextreiche Prompts liefern sofort nutzbare Ergebnisse",
+                prompt: "Erstelle eine strukturierte Agenda für ein 2-stündiges Projekt-Kick-off (ERP-Einführung, 12 Teilnehmer aus IT/Finanzen/Operations, externe Beraterin leitet). Ziel: gemeinsames Verständnis von Scope, Rollen, Zeitplan. Füge Zeitblöcke, Verantwortliche und erwartete Ergebnisse pro Punkt hinzu.",
+              },
+            ],
+          },
+          {
+            level: "Fortgeschritten", badge: "02", duration: "Woche 3–4",
+            goal: "Claude als strategischen Thought Partner einsetzen.",
+            tasks: [
+              {
+                title: "Risikomatrix entwickeln", time: "25 Min",
+                learn: "Rollenzuweisung + schrittweises Denken aktiviert tiefere Analyse",
+                prompt: "Agiere als erfahrener Risikomanager. Ich leite ein Post-Merger-Integration-Projekt (2 Produktionsunternehmen, ~800 MA). Denke Schritt für Schritt: 1) Identifiziere 8 kritische Risiken in den Kategorien People, Process, Technology, Culture. 2) Bewerte nach Eintrittswahrscheinlichkeit und Impact. 3) Schlage Mitigationsmaßnahmen vor. Ausgabe als Tabelle.",
+              },
+              {
+                title: "Devil's Advocate: Strategie challengen", time: "30 Min",
+                learn: "Rollenspiel für Gesprächsvorbereitung nutzen",
+                prompt: "Ich präsentiere nächste Woche folgende Empfehlung an den Vorstand: [deine Empfehlung einfügen]. Agiere als kritischer Vorstand und stelle mir die 5 härtesten Gegenfragen, die ich erwarten muss. Dann hilf mir, starke Antworten vorzubereiten.",
+              },
+              {
+                title: "Lenkungsausschuss-Bericht aus Notizen", time: "10 Min",
+                learn: "Rohmaterial transformieren — Claude als Strukturgeber",
+                prompt: "Hier sind meine unstrukturierten Notizen vom heutigen Projektmeeting: [Notizen einfügen]. Erstelle daraus einen Statusbericht für den Lenkungsausschuss mit: Ampelstatus (Kosten/Zeit/Qualität), 3 Highlights, 3 offene Punkte mit Owner und Deadline, und einem Management Summary in 2 Sätzen.",
+              },
+            ],
+          },
+          {
+            level: "Experte", badge: "03", duration: "Woche 5–6",
+            goal: "Komplexe Analysen durchführen und Workflows standardisieren.",
+            tasks: [
+              {
+                title: "Eigene Prompt-Bibliothek aufbauen", time: "40 Min",
+                learn: "Prompts als wiederverwendbare Templates standardisieren",
+                prompt: "Ich nutze Claude regelmäßig für: Stakeholder-E-Mails, Statusberichte, Risikoanalysen, Folienentwürfe. Hilf mir, für jeden Anwendungsfall ein Template zu erstellen, das ich nur noch mit Variablen befüllen muss. Format: [KONTEXT], [AUFGABE], [FORMAT], [STIL].",
+              },
+              {
+                title: "Benchmarking-Analyse mit Transparenz", time: "20 Min",
+                learn: "Halluzinationen reduzieren durch explizite Unsicherheitsanweisung",
+                prompt: "Ich berate ein Handelsunternehmen zur digitalen Transformation. Was sind die 5 relevantesten Best Practices für Digital Transformation im Retail? Für jede: Beschreibung, Beispielunternehmen, messbarer Nutzen, typische Umsetzungsherausforderungen. Wenn du dir bei Fakten unsicher bist, kennzeichne das transparent.",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "cowork", name: "Claude Cowork", subtitle: "Desktop-Automatisierung", tag: "Desktop", icon: "⬡",
+        levels: [
+          {
+            level: "Einstieg", badge: "01", duration: "Woche 1–2",
+            goal: "Verstehen, welche Desktop-Aufgaben sich lohnen zu automatisieren.",
+            tasks: [
+              {
+                title: "Projektordnerstruktur anlegen", time: "10 Min",
+                learn: "Repetitive File-Operationen einmalig beschreiben und ausführen lassen",
+                prompt: "Erstelle eine standardisierte Ordnerstruktur für ein neues Beratungsprojekt: 00_Admin, 01_Analyse, 02_Konzept, 03_Umsetzung, 04_Berichte, 05_Kommunikation. Jeder Ordner soll Unterordner Drafts, Final, Archive enthalten.",
+              },
+              {
+                title: "Downloads automatisch sortieren", time: "15 Min",
+                learn: "Manuelle Dateiorganisation vollständig delegieren",
+                prompt: "Im Downloads-Ordner liegen 20+ unbenannte PDFs. Benenne sie nach dem Schema YYYYMMDD_[Inhalt-Stichwort] um, basierend auf dem Dateiinhalt. Verschiebe sie in den passenden Projektordner.",
+              },
+            ],
+          },
+          {
+            level: "Fortgeschritten", badge: "02", duration: "Woche 3–4",
+            goal: "Wiederkehrende Reporting-Prozesse auf Minuten reduzieren.",
+            tasks: [
+              {
+                title: "Wöchentlichen Report zusammenstellen", time: "Setup 30 Min → danach 5 Min/Woche",
+                learn: "Mehrere Quellen aggregieren — Stunden pro Woche sparen",
+                prompt: "Jeden Freitag erstelle ich einen Wochenreport aus: 1) Meeting-Notizen (Word-Dateien in /Meetings/KW[X]), 2) E-Mail-Zusammenfassung aus Outlook, 3) offenen Tasks aus meiner To-do-Liste. Fasse alles zusammen mit den Sektionen: Erledigtes, Offenes, Nächste Woche.",
+              },
+              {
+                title: "Meeting-Nachbereitung automatisieren", time: "Setup 20 Min → danach 3 Min/Meeting",
+                learn: "Ende-zu-Ende-Workflow: Transkript → Dokument → Follow-up-E-Mail",
+                prompt: "Nach jedem Meeting habe ich ein Transkript. Erstelle automatisch: 1) Zusammenfassung (5 Bullets), 2) Action Items mit Owner & Deadline, 3) Entwurf einer Follow-up-E-Mail. Speichere als Word-Dokument im richtigen Projektordner.",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "designer", name: "Claude Designer", subtitle: "Canva-Integration", tag: "Design", icon: "◈",
+        levels: [
+          {
+            level: "Einstieg", badge: "01", duration: "Woche 1–2",
+            goal: "Erste visuelle Outputs für Beratungsprojekte erstellen.",
+            tasks: [
+              {
+                title: "Executive Summary als 1-Pager", time: "20 Min",
+                learn: "Textinhalte direkt in ein professionelles Canva-Design überführen",
+                prompt: "Erstelle einen professionellen 1-Pager (Poster-Format) für das Executive Summary unseres Strategieprojekts. Inhalt: Ausgangslage (2 Sätze), 3 Kernempfehlungen (je 1 Satz + Icon), erwarteter Nutzen (ROI, Timeframe). Stil: corporate, minimalistisch, Blau/Weiß/Grau.",
+              },
+              {
+                title: "Projektplan-Infografik", time: "25 Min",
+                learn: "Gantt-Charts durch visuelle Timelines ersetzen",
+                prompt: "Erstelle eine Infografik mit 4 Projektphasen über 6 Monate, Meilensteinen und Deliverables pro Phase. Zielgruppe: Geschäftsführung ohne Zeit für Gantt-Charts. Stil: modern, farbcodiert pro Phase.",
+              },
+            ],
+          },
+          {
+            level: "Fortgeschritten", badge: "02", duration: "Woche 3–4",
+            goal: "Präsentationen direkt aus Analyseergebnissen generieren.",
+            tasks: [
+              {
+                title: "Vorstandspräsentation aus Analyseergebnissen", time: "35 Min",
+                learn: "Vom Rohmaterial zur Boardroom-Präsentation in einem Schritt",
+                prompt: "Analyseergebnisse: [Stichpunkte einfügen]. Erstelle eine 8-seitige Präsentation für den Vorstand. Struktur: Titel, Agenda, Ausgangslage (2 Slides), Kernbefunde (3 Slides), Empfehlungen (1 Slide), Next Steps. Stil: professional, dezente Unternehmensfarben.",
+              },
+              {
+                title: "Change-Kommunikationspaket", time: "40 Min",
+                learn: "Komplexe Veränderung visuell zugänglich kommunizieren",
+                prompt: "Wir führen ein neues Tool ein (500 MA, kein IT-Vorwissen). Erstelle: 1) Ankündigungs-Poster (warum/was/wann), 2) FAQ-Infografik (5 häufige Fragen), 3) Schulungsagenda-Übersicht. Zielgruppe: operative Mitarbeiter.",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "code", name: "Claude Code", subtitle: "Agentic Coding CLI", tag: "Code", icon: "</>",
+        levels: [
+          {
+            level: "Einstieg", badge: "01", duration: "Woche 1–2",
+            goal: "Daten analysieren und Berichte automatisieren — ohne Programmierkenntnisse.",
+            tasks: [
+              {
+                title: "Projektbudgets aus Excel analysieren", time: "20 Min",
+                learn: "Datenanalyse ohne Excel-Kenntnisse vollständig delegieren",
+                prompt: "Analysiere diese Excel-Datei (12 Projekte: Name, Budget, Ist-Kosten, Abweichung, Status, PM). Erstelle: 1) Übersicht über/unter Budget, 2) Balkendiagramm Budget vs. Ist-Kosten, 3) Summary-Tabelle nach PM sortiert. Speichere als Excel-Report.",
+              },
+              {
+                title: "Lieferantenangebote automatisch vergleichen", time: "15 Min",
+                learn: "Manuelles Dokument-Auslesen auf null reduzieren",
+                prompt: "Ich habe 15 PDF-Angebote von Lieferanten (Ordner /Angebote). Extrahiere aus jedem: Anbieter, Gesamtpreis, Lieferzeit, Top-3-Konditionen. Fasse alles in einer Vergleichstabelle als Excel zusammen.",
+              },
+            ],
+          },
+          {
+            level: "Fortgeschritten", badge: "02", duration: "Woche 3–4",
+            goal: "Skripte für wiederkehrende Aufgaben einmalig bauen, dauerhaft nutzen.",
+            tasks: [
+              {
+                title: "Automatischer Projektstatusbericht", time: "Setup 45 Min → danach 2 Min/Woche",
+                learn: "Einmalig bauen, wöchentlich automatisch ausführen",
+                prompt: "Schreibe ein Python-Skript, das: 1) Alle Excel-Dateien in /Projekte/Status einliest, 2) Ampelstatus, Kommentar, Datum extrahiert, 3) Einen konsolidierten PDF-Report mit Tabelle und Ampel-Visualisierung erstellt. Skript soll per Doppelklick ausführbar sein.",
+              },
+              {
+                title: "Stakeholder-Map automatisch generieren", time: "30 Min",
+                learn: "Visualisierungen programmieren lassen statt manuell erstellen",
+                prompt: "Ich habe eine Excel-Liste mit 30 Stakeholdern (Name, Rolle, Einfluss hoch/mittel/niedrig, Einstellung positiv/neutral/negativ). Erstelle ein Python-Skript, das daraus automatisch eine Power-Interest-Matrix als PNG generiert und als PDF exportiert.",
+              },
+            ],
+          },
+        ],
+      },
+    ];
+
+    const tips = [
+      { icon: "01", text: "Kontext ist König — je mehr Hintergrund, desto präzisere Ergebnisse" },
+      { icon: "02", text: "Iteriere gezielt: 'Das ist gut, aber mach X konkreter' funktioniert immer" },
+      { icon: "03", text: "'Wenn du unsicher bist, sag es' — reduziert Halluzinationen spürbar" },
+      { icon: "04", text: "Rolle zuweisen: 'Agiere als CFO' hebt die Antwortqualität deutlich" },
+      { icon: "05", text: "Kein Gedächtnis zwischen Chats — relevanten Kontext immer mitgeben" },
+      { icon: "06", text: "Strukturierter Output: Tabellen, Bullets, Abschnitte explizit anfordern" },
+    ];
+
+    function App() {
+      const [activeTool, setActiveTool] = useState("claude");
+      const [activeLevel, setActiveLevel] = useState(0);
+      const [expandedTask, setExpandedTask] = useState(null);
+      const [completedTasks, setCompletedTasks] = useState({});
+
+      const tool = tools.find((t) => t.id === activeTool);
+      const levelData = tool.levels[activeLevel];
+
+      const toggleComplete = (key) => setCompletedTasks((prev) => ({ ...prev, [key]: !prev[key] }));
+
+      const totalTasks = tools.reduce((s, t) => s + t.levels.reduce((ss, l) => ss + l.tasks.length, 0), 0);
+      const completedCount = Object.values(completedTasks).filter(Boolean).length;
+      const progress = Math.round((completedCount / totalTasks) * 100);
+
+      return (
+        <div style={{ fontFamily: '"Tahoma","Geneva",sans-serif', background: "#F4F6F8", minHeight: "100vh" }}>
+
+          {/* Header */}
+          <div style={{ background: "#055F7D", padding: "0 32px" }}>
+            <div style={{ maxWidth: "960px", margin: "0 auto", padding: "18px 0", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                <ItonicSignet />
+                <div style={{ borderLeft: "1px solid rgba(255,255,255,0.25)", paddingLeft: "14px" }}>
+                  <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.6)", marginBottom: "2px", textTransform: "uppercase", letterSpacing: "0.12em" }}>
+                    Unternehmensberatung · Projektmanagement
+                  </div>
+                  <div style={{ fontSize: "17px", fontWeight: "700", color: "#fff" }}>Claude Learning Journey</div>
+                </div>
+              </div>
+              <div style={{ textAlign: "right" }}>
+                <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.6)", marginBottom: "6px" }}>Gesamtfortschritt</div>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <div style={{ width: "130px", height: "5px", background: "rgba(255,255,255,0.2)", borderRadius: "3px" }}>
+                    <div style={{ width: `${progress}%`, height: "100%", background: "#2DB4D2", borderRadius: "3px", transition: "width 0.4s ease" }} />
+                  </div>
+                  <span style={{ fontSize: "13px", fontWeight: "700", color: "#AAE0E8" }}>{progress}%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ maxWidth: "960px", margin: "0 auto", padding: "28px 32px" }}>
+
+            {/* Tool Tabs */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "10px", marginBottom: "28px" }}>
+              {tools.map((t) => {
+                const done = t.levels.reduce((s, l) => s + l.tasks.filter((_, ti) => completedTasks[`${t.id}-${t.levels.indexOf(l)}-${ti}`]).length, 0);
+                const total = t.levels.reduce((s, l) => s + l.tasks.length, 0);
+                const isActive = activeTool === t.id;
+                return (
+                  <button key={t.id}
+                    onClick={() => { setActiveTool(t.id); setActiveLevel(0); setExpandedTask(null); }}
+                    style={{
+                      background: isActive ? "#055F7D" : "#fff",
+                      border: `2px solid ${isActive ? "#055F7D" : "#C4C7CB"}`,
+                      borderRadius: "6px", padding: "16px 14px",
+                      cursor: "pointer", textAlign: "left", transition: "all 0.15s ease",
+                    }}>
+                    <div style={{ fontSize: "9px", fontWeight: "700", letterSpacing: "0.15em", textTransform: "uppercase", color: isActive ? "#AAE0E8" : "#7F7F7F", marginBottom: "6px" }}>{t.tag}</div>
+                    <div style={{ fontSize: "14px", fontWeight: "700", color: isActive ? "#fff" : "#055F7D", marginBottom: "2px" }}>{t.name}</div>
+                    <div style={{ fontSize: "11px", color: isActive ? "rgba(255,255,255,0.65)" : "#7F7F7F", marginBottom: "10px" }}>{t.subtitle}</div>
+                    <div style={{ fontSize: "10px", color: isActive ? "#2DB4D2" : "#C4C7CB" }}>{done}/{total} erledigt</div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Level Tabs */}
+            <div style={{ display: "flex", gap: "6px", marginBottom: "20px" }}>
+              {tool.levels.map((l, i) => (
+                <button key={i}
+                  onClick={() => { setActiveLevel(i); setExpandedTask(null); }}
+                  style={{
+                    background: activeLevel === i ? "#077FA9" : "#fff",
+                    color: activeLevel === i ? "#fff" : "#53585F",
+                    border: `1px solid ${activeLevel === i ? "#077FA9" : "#C4C7CB"}`,
+                    borderRadius: "4px", padding: "7px 16px",
+                    fontSize: "11px", fontWeight: "700", cursor: "pointer",
+                    fontFamily: '"Tahoma","Geneva",sans-serif', letterSpacing: "0.05em",
+                  }}>
+                  {l.badge} · {l.level}
+                </button>
+              ))}
+            </div>
+
+            {/* Level Info Card */}
+            <div style={{ background: "#EBF7FA", border: "1px solid #AAE0E8", borderLeft: "4px solid #077FA9", borderRadius: "6px", padding: "16px 20px", marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <div style={{ fontSize: "10px", fontWeight: "700", color: "#077FA9", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: "5px" }}>{levelData.duration}</div>
+                <div style={{ fontSize: "13px", color: "#53585F" }}><strong>Ziel:</strong> {levelData.goal}</div>
+              </div>
+              <div style={{ background: "#077FA9", color: "#fff", borderRadius: "4px", padding: "6px 12px", fontSize: "11px", fontWeight: "700", whiteSpace: "nowrap", marginLeft: "16px" }}>
+                {levelData.tasks.length} Übungen
+              </div>
+            </div>
+
+            {/* Task Cards */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              {levelData.tasks.map((task, ti) => {
+                const key = `${activeTool}-${activeLevel}-${ti}`;
+                const isExpanded = expandedTask === key;
+                const isDone = completedTasks[key];
+                return (
+                  <div key={ti} style={{ background: "#fff", border: `1px solid ${isDone ? "#27864A" : "#C4C7CB"}`, borderRadius: "6px", overflow: "hidden", transition: "border-color 0.2s" }}>
+                    <div onClick={() => setExpandedTask(isExpanded ? null : key)}
+                      style={{ padding: "16px 18px", cursor: "pointer", display: "flex", alignItems: "center", gap: "14px" }}>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); toggleComplete(key); }}
+                        style={{ width: "22px", height: "22px", borderRadius: "50%", border: `2px solid ${isDone ? "#27864A" : "#C4C7CB"}`, background: isDone ? "#27864A" : "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: "11px", color: "#fff", fontWeight: "700" }}>
+                        {isDone ? "✓" : ""}
+                      </button>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: "14px", fontWeight: "700", color: isDone ? "#27864A" : "#055F7D", marginBottom: "3px" }}>{task.title}</div>
+                        <div style={{ fontSize: "11px", color: "#7F7F7F" }}>⏱ {task.time}</div>
+                      </div>
+                      <div style={{ color: "#C4C7CB", fontSize: "11px", fontWeight: "700" }}>{isExpanded ? "▲" : "▼"}</div>
+                    </div>
+
+                    {isExpanded && (
+                      <div style={{ borderTop: "1px solid #F0F2F4", padding: "18px 20px", background: "#FAFBFC" }}>
+                        <div style={{ fontSize: "10px", fontWeight: "700", color: "#077FA9", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: "10px" }}>Beispiel-Prompt</div>
+                        <div style={{ background: "#fff", border: "1px solid #C4C7CB", borderRadius: "4px", padding: "14px 16px", fontSize: "12px", color: "#53585F", lineHeight: "1.7", whiteSpace: "pre-wrap", fontFamily: '"Tahoma","Geneva",sans-serif' }}>
+                          {task.prompt}
+                        </div>
+                        <div style={{ marginTop: "12px", background: "#EBF7FA", border: "1px solid #AAE0E8", borderRadius: "4px", padding: "10px 14px", fontSize: "12px", color: "#055F7D" }}>
+                          <strong>Lernziel:</strong> {task.learn}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Tips */}
+            <div style={{ marginTop: "36px", background: "#fff", border: "1px solid #C4C7CB", borderRadius: "6px", padding: "24px" }}>
+              <div style={{ fontSize: "10px", fontWeight: "700", color: "#055F7D", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: "16px" }}>
+                Goldene Prompting-Regeln
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                {tips.map((tip, i) => (
+                  <div key={i} style={{ display: "flex", gap: "12px", padding: "12px", background: "#F4F6F8", borderRadius: "4px", alignItems: "flex-start" }}>
+                    <span style={{ background: "#055F7D", color: "#fff", borderRadius: "3px", padding: "2px 6px", fontSize: "10px", fontWeight: "700", flexShrink: 0 }}>{tip.icon}</span>
+                    <span style={{ fontSize: "11px", color: "#53585F", lineHeight: "1.6" }}>{tip.text}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div style={{ textAlign: "center", padding: "24px 0 8px", fontSize: "10px", color: "#C4C7CB", letterSpacing: "0.08em" }}>
+              itonic advisors · Claude Learning Journey · Unternehmensberatung & Projektmanagement
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
