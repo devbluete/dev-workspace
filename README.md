@@ -1,1 +1,1 @@
-Private Development Workspace to provide Samopels etc
+Private Development Workspace to provide samples
