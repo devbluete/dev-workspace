@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice Reader – Lösungsübersicht</title>
+<style>
+  :root {
+    --itonic-blue-deep:  #055F7D;
+    --itonic-blue-mid:   #077FA9;
+    --itonic-blue-light: #2DB4D2;
+    --itonic-blue-pale:  #AAE0E8;
+    --itonic-gray-dark:  #53585F;
+    --itonic-gray-mid:   #7F7F7F;
+    --itonic-gray-light: #C4C7CB;
+    --itonic-white:      #FFFFFF;
+    --itonic-green:      #27864A;
+    --itonic-yellow:     #D4860A;
+    font-family: "Tahoma", "Geneva", sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Tahoma", "Geneva", sans-serif;
+    background: #f0f4f7;
+    color: var(--itonic-gray-dark);
+    padding: 32px;
+    min-width: 1050px;
+  }
+
+  /* ── Header ── */
+  .page-header {
+    background: var(--itonic-blue-deep);
+    border-radius: 14px;
+    padding: 28px 36px;
+    color: white;
+    margin-bottom: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .header-left h1 {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    margin-bottom: 6px;
+  }
+  .header-left p {
+    font-size: 13px;
+    opacity: 0.75;
+    font-weight: 400;
+  }
+  .header-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+  .header-badges {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .header-badge {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 8px;
+    padding: 8px 16px;
+    text-align: center;
+    font-size: 11px;
+    color: rgba(255,255,255,0.85);
+    min-width: 110px;
+  }
+  .header-badge strong {
+    display: block;
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 2px;
+  }
+
+  /* ── Main flow layout ── */
+  .main-flow {
+    display: grid;
+    grid-template-columns: 1fr 48px 1fr;
+    gap: 0;
+    align-items: start;
+    margin-bottom: 20px;
+  }
+
+  /* ── Process lane ── */
+  .lane {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .lane-header {
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .lane-header .badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.2);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-left: auto;
+  }
+  .lane.auto .lane-header  { background: var(--itonic-blue-mid); }
+  .lane.human .lane-header { background: var(--itonic-green); }
+
+  .lane-body { padding: 16px 14px 18px; }
+
+  /* ── Phase block (functional group) ── */
+  .phase {
+    border: 1.5px solid var(--itonic-blue-pale);
+    border-radius: 10px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .phase-title {
+    background: var(--itonic-blue-pale);
+    color: var(--itonic-blue-deep);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    padding: 7px 14px;
+  }
+  .phase-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+
+  /* ── Step block ── */
+  .step {
+    background: #f6fbfc;
+    border-left: 3px solid var(--itonic-blue-light);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .step.green  { border-left-color: var(--itonic-green); }
+  .step.yellow { border-left-color: var(--itonic-yellow); }
+  .step.dark   { border-left-color: var(--itonic-blue-deep); }
+
+  .step-icon { font-size: 18px; flex-shrink: 0; width: 24px; text-align: center; padding-top: 1px; }
+  .step-title { font-size: 13px; font-weight: 700; color: var(--itonic-blue-deep); margin-bottom: 3px; }
+  .step-desc  { font-size: 11px; color: var(--itonic-gray-mid); line-height: 1.5; }
+
+  /* ── Arrow between steps ── */
+  .arrow-down {
+    height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--itonic-blue-light);
+    font-size: 14px;
+  }
+
+  /* ── Middle connector ── */
+  .connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 0;
+    height: 100%;
+  }
+  .connector-line {
+    flex: 1;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, var(--itonic-blue-light), transparent);
+  }
+  .connector-pill {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    background: var(--itonic-blue-deep);
+    color: white;
+    border-radius: 20px;
+    padding: 14px 7px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* ── Bottom sections ── */
+  .bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .section-card {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .section-card.full { grid-column: 1 / -1; }
+
+  .section-header {
+    background: var(--itonic-blue-deep);
+    color: white;
+    padding: 12px 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-header.mid { background: var(--itonic-blue-mid); }
+
+  .section-body { padding: 16px 20px; }
+
+  /* ── Benefits grid ── */
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .benefit-item {
+    background: #f6fbfc;
+    border: 1px solid var(--itonic-blue-pale);
+    border-radius: 10px;
+    padding: 14px 12px;
+    text-align: center;
+  }
+  .benefit-icon { font-size: 24px; margin-bottom: 8px; }
+  .benefit-label { font-size: 12px; font-weight: 700; color: var(--itonic-blue-deep); margin-bottom: 4px; }
+  .benefit-desc  { font-size: 11px; color: var(--itonic-gray-mid); line-height: 1.45; }
+
+  /* ── Status flow ── */
+  .status-flow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .status-pill {
+    border-radius: 24px;
+    padding: 9px 18px;
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex-direction: column;
+    text-align: center;
+    min-width: 130px;
+  }
+  .status-pill .by {
+    font-size: 9px;
+    font-weight: 400;
+    opacity: 0.75;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .status-arrow { font-size: 22px; color: var(--itonic-blue-light); }
+
+  /* ── Integration row ── */
+  .integration-row {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .integration-item {
+    flex: 1;
+    min-width: 160px;
+    background: #f6fbfc;
+    border: 1px solid var(--itonic-blue-pale);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .integration-icon { font-size: 22px; flex-shrink: 0; }
+  .integration-label { font-size: 12px; font-weight: 700; color: var(--itonic-blue-deep); margin-bottom: 3px; }
+  .integration-desc  { font-size: 11px; color: var(--itonic-gray-mid); line-height: 1.45; }
+
+  footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 11px;
+    color: var(--itonic-gray-mid);
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<div class="page-header">
+  <div class="header-left">
+    <h1>Invoice Reader — Lösungsübersicht</h1>
+    <p>KI-gestützte Rechnungsverarbeitung mit menschlicher Qualitätsprüfung und ERP-Integration</p>
+  </div>
+  <div class="header-logo">
+    <!-- itonic Signet -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190.17 141.78" style="width:54px;height:auto;opacity:0.92">
+      <defs><style>.s1{fill:none}.s2{fill:#fff}.s3{fill:rgba(255,255,255,0.75)}.s4{fill:rgba(255,255,255,0.45)}.s5{fill:rgba(255,255,255,0.6)}.s6{fill:rgba(255,255,255,0.85)}</style></defs>
+      <g><g><rect class="s1" width="190.17" height="141.78"/>
+      <circle class="s2" cx="97.24" cy="61.16" r="4.15"/><circle class="s2" cx="95.09" cy="70.88" r="4.15"/><circle class="s2" cx="92.93" cy="80.6" r="4.15"/>
+      <circle class="s3" cx="99.4" cy="51.44" r="2.49"/><circle class="s3" cx="89.68" cy="51.44" r="2.49"/><circle class="s3" cx="109.11" cy="51.44" r="2.49"/><circle class="s3" cx="87.52" cy="61.16" r="2.49"/><circle class="s3" cx="85.37" cy="70.88" r="2.49"/><circle class="s3" cx="83.22" cy="80.6" r="2.49"/><circle class="s3" cx="81.06" cy="90.31" r="2.49"/><circle class="s3" cx="90.78" cy="90.31" r="2.49"/><circle class="s3" cx="100.5" cy="90.31" r="2.49"/><circle class="s3" cx="102.65" cy="80.6" r="2.49"/><circle class="s3" cx="104.8" cy="70.88" r="2.49"/><circle class="s3" cx="106.96" cy="61.16" r="2.49"/>
+      <circle class="s4" cx="64.84" cy="32.01" r=".83"/><circle class="s4" cx="74.55" cy="32.01" r=".83"/><circle class="s4" cx="84.27" cy="32.01" r=".83"/><circle class="s4" cx="93.99" cy="32.01" r=".83"/><circle class="s4" cx="103.7" cy="32.01" r=".83"/><circle class="s4" cx="113.42" cy="32.01" r=".83"/><circle class="s4" cx="123.14" cy="32.01" r=".83"/><circle class="s4" cx="132.85" cy="32.01" r=".83"/><circle class="s4" cx="142.57" cy="32.01" r=".83"/><circle class="s4" cx="140.42" cy="41.73" r=".83"/><circle class="s4" cx="138.26" cy="51.44" r=".83"/><circle class="s4" cx="136.11" cy="61.16" r=".83"/><circle class="s4" cx="133.95" cy="70.88" r=".83"/><circle class="s4" cx="131.8" cy="80.6" r=".83"/><circle class="s4" cx="129.65" cy="90.31" r=".83"/><circle class="s4" cx="127.49" cy="100.03" r=".83"/><circle class="s4" cx="125.34" cy="109.75" r=".83"/><circle class="s4" cx="115.62" cy="109.75" r=".83"/><circle class="s4" cx="105.9" cy="109.77" r=".83"/><circle class="s4" cx="96.19" cy="109.75" r=".83"/><circle class="s4" cx="86.47" cy="109.77" r=".83"/><circle class="s4" cx="76.75" cy="109.77" r=".83"/><circle class="s4" cx="67.04" cy="109.77" r=".83"/><circle class="s4" cx="57.32" cy="109.77" r=".83"/><circle class="s4" cx="47.6" cy="109.77" r=".83"/><circle class="s4" cx="49.76" cy="100.03" r=".83"/><circle class="s4" cx="59.47" cy="100.03" r=".83"/><circle class="s4" cx="69.19" cy="100.03" r=".83"/><circle class="s4" cx="61.63" cy="90.31" r=".83"/><circle class="s4" cx="51.91" cy="90.33" r=".83"/><circle class="s4" cx="54.06" cy="80.6" r=".83"/><circle class="s4" cx="56.22" cy="70.88" r=".83"/><circle class="s4" cx="58.37" cy="61.16" r=".83"/><circle class="s4" cx="60.53" cy="51.44" r=".83"/><circle class="s4" cx="70.24" cy="51.44" r=".83"/><circle class="s4" cx="72.4" cy="41.73" r=".83"/><circle class="s4" cx="82.12" cy="41.73" r=".83"/><circle class="s4" cx="62.68" cy="41.73" r=".83"/><circle class="s4" cx="117.77" cy="100.03" r=".83"/><circle class="s4" cx="108.06" cy="100.03" r=".83"/><circle class="s4" cx="119.93" cy="90.31" r=".83"/><circle class="s4" cx="128.55" cy="51.44" r=".83"/><circle class="s4" cx="130.7" cy="41.73" r=".83"/><circle class="s4" cx="120.98" cy="41.73" r=".83"/>
+      <circle class="s5" cx="77.81" cy="61.16" r="1.66"/><circle class="s5" cx="75.65" cy="70.88" r="1.66"/><circle class="s5" cx="73.5" cy="80.6" r="1.66"/><circle class="s5" cx="112.37" cy="80.6" r="1.66"/><circle class="s5" cx="114.52" cy="70.88" r="1.66"/><circle class="s5" cx="116.67" cy="61.16" r="1.66"/>
+      <circle class="s6" cx="101.55" cy="41.73" r="1.66"/><circle class="s6" cx="91.83" cy="41.73" r="1.66"/><circle class="s6" cx="111.27" cy="41.73" r="1.66"/><circle class="s6" cx="79.96" cy="51.44" r="1.66"/><circle class="s6" cx="71.34" cy="90.31" r="1.66"/><circle class="s6" cx="110.21" cy="90.31" r="1.66"/><circle class="s6" cx="78.91" cy="100.03" r="1.66"/><circle class="s6" cx="88.62" cy="100.03" r="1.66"/><circle class="s6" cx="98.34" cy="100.03" r="1.66"/><circle class="s6" cx="126.39" cy="61.16" r="1.24"/><circle class="s6" cx="68.09" cy="61.16" r="1.24"/><circle class="s6" cx="65.94" cy="70.88" r="1.24"/><circle class="s6" cx="63.78" cy="80.6" r="1.24"/><circle class="s6" cx="124.24" cy="70.9" r="1.24"/><circle class="s6" cx="122.08" cy="80.6" r="1.24"/><circle class="s6" cx="118.83" cy="51.44" r="1.66"/>
+      </g></g>
+    </svg>
+    <div class="header-badges">
+      <div class="header-badge"><strong>100%</strong>lokal · keine Cloud</div>
+      <div class="header-badge"><strong>3</strong>Eingangsformate<br>PDF · JPG · PNG</div>
+      <div class="header-badge"><strong>4</strong>Prozessschritte<br>bis ERP-Import</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Two-lane flow ── -->
+<div class="main-flow">
+
+  <!-- Left: Automatische Verarbeitung -->
+  <div class="lane auto">
+    <div class="lane-header">
+      🤖 Automatische Verarbeitung
+      <span class="badge">Vollautomatisch</span>
+    </div>
+    <div class="lane-body">
+
+      <div class="phase">
+        <div class="phase-title">📥 Eingang & Erkennung</div>
+        <div class="phase-body">
+          <div class="step">
+            <div class="step-icon">🗂️</div>
+            <div>
+              <div class="step-title">Ordner-Überwachung</div>
+              <div class="step-desc">Definierte Ablageverzeichnisse werden automatisch auf neue Rechnungen geprüft — ohne manuellen Eingriff.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-icon">📄</div>
+            <div>
+              <div class="step-title">Neue Rechnung erkannt</div>
+              <div class="step-desc">PDF, JPG und PNG werden unterstützt. Bereits verarbeitete Dokumente werden automatisch übersprungen.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-down">↓</div>
+
+      <div class="phase">
+        <div class="phase-title">🔍 Textextraktion & Lesbarkeit</div>
+        <div class="phase-body">
+          <div class="step">
+            <div class="step-icon">📋</div>
+            <div>
+              <div class="step-title">Digitale Rechnungen</div>
+              <div class="step-desc">Direkte Textextraktion aus digital erstellten PDFs — schnell und verlustfrei.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-icon">🖨️</div>
+            <div>
+              <div class="step-title">Gescannte Dokumente & Bilder</div>
+              <div class="step-desc">Automatische Texterkennung (OCR) mit Bildoptimierung für schlechte Scans. Unterstützt Deutsch und Englisch.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-down">↓</div>
+
+      <div class="phase">
+        <div class="phase-title">🧠 KI-Analyse</div>
+        <div class="phase-body">
+          <div class="step yellow">
+            <div class="step-icon">🧠</div>
+            <div>
+              <div class="step-title">Lokales KI-Modell extrahiert alle Felder</div>
+              <div class="step-desc">Rechnungsnummer, Datum, Lieferant, Netto, MwSt, Brutto, IBAN und weitere Felder werden vollständig erkannt. Das Modell läuft lokal — keine Daten verlassen das Unternehmen.</div>
+            </div>
+          </div>
+          <div class="step yellow">
+            <div class="step-icon">✔️</div>
+            <div>
+              <div class="step-title">Automatische Plausibilitätsprüfung</div>
+              <div class="step-desc">Betragsrechnung (Netto + MwSt = Brutto) wird automatisch validiert. Bei Unstimmigkeit startet ein zweiter KI-Prüflauf — selbstkorrigierend.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-down">↓</div>
+
+      <div class="phase">
+        <div class="phase-title">💾 Ergebnis gespeichert</div>
+        <div class="phase-body">
+          <div class="step green">
+            <div class="step-icon">💾</div>
+            <div>
+              <div class="step-title">Strukturierte Daten bereitgestellt</div>
+              <div class="step-desc">Alle extrahierten Felder werden als strukturierter Datensatz neben dem Original gespeichert und stehen dem Invoice Reader sofort zur Verfügung.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Middle connector -->
+  <div class="connector">
+    <div class="connector-line"></div>
+    <div class="connector-pill">Gemeinsame Datenbasis</div>
+    <div class="connector-line"></div>
+  </div>
+
+  <!-- Right: Menschliche Prüfung -->
+  <div class="lane human">
+    <div class="lane-header">
+      👤 Manuelle Prüfung & Freigabe
+      <span class="badge">Human in the Loop</span>
+    </div>
+    <div class="lane-body">
+
+      <div class="phase">
+        <div class="phase-title">🌐 Web-Oberfläche</div>
+        <div class="phase-body">
+          <div class="step">
+            <div class="step-icon">🌐</div>
+            <div>
+              <div class="step-title">Browser-basiertes Interface</div>
+              <div class="step-desc">Sachbearbeiter öffnen die Anwendung direkt im Browser — keine Installation erforderlich. Zugriff über das interne Netzwerk.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-icon">📂</div>
+            <div>
+              <div class="step-title">Rechnungen laden</div>
+              <div class="step-desc">Ordner auswählen oder einzelne Dateien hochladen. Alle Rechnungen erscheinen übersichtlich als Liste.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-down">↓</div>
+
+      <div class="phase">
+        <div class="phase-title">👁️ Prüfen & Korrigieren</div>
+        <div class="phase-body">
+          <div class="step">
+            <div class="step-icon">👁️</div>
+            <div>
+              <div class="step-title">Seite-an-Seite Ansicht</div>
+              <div class="step-desc">Original-Rechnung und extrahierte Daten werden nebeneinander angezeigt — sofortiger Abgleich auf einen Blick.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-icon">✏️</div>
+            <div>
+              <div class="step-title">Felder bearbeiten</div>
+              <div class="step-desc">Alle Felder sind direkt editierbar. Korrekturen werden sofort gespeichert.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-down">↓</div>
+
+      <div class="phase">
+        <div class="phase-title">✅ Freigabe</div>
+        <div class="phase-body">
+          <div class="step green">
+            <div class="step-icon">✅</div>
+            <div>
+              <div class="step-title">Rechnung freigeben</div>
+              <div class="step-desc">Ein Klick bestätigt die Prüfung. Nur freigegebene Rechnungen können exportiert oder ins ERP übertragen werden.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-down">↓</div>
+
+      <div class="phase">
+        <div class="phase-title">📤 Export & ERP-Übergabe</div>
+        <div class="phase-body">
+          <div class="step dark">
+            <div class="step-icon">📊</div>
+            <div>
+              <div class="step-title">Excel-Export</div>
+              <div class="step-desc">Alle freigegebenen Rechnungen als strukturierte Excel-Datei für weitere Verwendung.</div>
+            </div>
+          </div>
+          <div class="step dark">
+            <div class="step-icon">🔗</div>
+            <div>
+              <div class="step-title">Direktübertragung in Vertec</div>
+              <div class="step-desc">Projekt und Phase wählen, Rechnung mit Originaldokument direkt ins ERP-System übertragen.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Status-Lebenszyklus ── -->
+<div class="section-card full" style="margin-bottom:16px;">
+  <div class="section-header">📌 Lebenszyklus einer Rechnung im System</div>
+  <div class="section-body">
+    <div class="status-flow">
+      <div class="status-pill" style="background:var(--itonic-blue-mid)">
+        📥 Analysiert
+        <span class="by">Automatisch</span>
+      </div>
+      <span class="status-arrow">→</span>
+      <div class="status-pill" style="background:var(--itonic-blue-light)">
+        ✏️ Bearbeitet
+        <span class="by">Sachbearbeiter</span>
+      </div>
+      <span class="status-arrow">→</span>
+      <div class="status-pill" style="background:var(--itonic-green)">
+        ✅ Geprüft &amp; Freigegeben
+        <span class="by">Sachbearbeiter</span>
+      </div>
+      <span class="status-arrow">→</span>
+      <div class="status-pill" style="background:var(--itonic-blue-deep)">
+        🔗 In Vertec importiert
+        <span class="by">ERP-System</span>
+      </div>
+      <span style="font-size:11px;color:var(--itonic-gray-mid);margin-left:10px;max-width:200px;line-height:1.4;">Nur freigegebene Rechnungen können exportiert oder ins ERP übertragen werden.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── Nutzen & Sicherheit ── -->
+<div class="bottom-row">
+  <div class="section-card full">
+    <div class="section-header mid">🎯 Kernnutzen auf einen Blick</div>
+    <div class="section-body">
+      <div class="benefits-grid">
+        <div class="benefit-item">
+          <div class="benefit-icon">⚡</div>
+          <div class="benefit-label">Zeitersparnis</div>
+          <div class="benefit-desc">Manuelle Dateneingabe entfällt. KI übernimmt die Erstextraktion aller Felder automatisch.</div>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">🔒</div>
+          <div class="benefit-label">Datensicherheit</div>
+          <div class="benefit-desc">100% lokal — keine Daten verlassen das Unternehmen. Keine Cloud-Dienste, keine externe Übertragung.</div>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">✅</div>
+          <div class="benefit-label">Qualitätssicherung</div>
+          <div class="benefit-desc">Automatische Plausibilitätsprüfung und menschliche Freigabe vor jeder Weiterverarbeitung.</div>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">🔗</div>
+          <div class="benefit-label">ERP-Integration</div>
+          <div class="benefit-desc">Direkter Datentransfer in Vertec — inklusive Originaldokument, Projekt- und Phasenzuordnung.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>Invoice Reader · itonic · Stand Mai 2026 · Alle Daten bleiben lokal — kein Cloud-Dienst</footer>
+
+</body>
+</html>
