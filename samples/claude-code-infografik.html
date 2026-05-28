@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code – Infografik | itonic advisors</title>
+<style>
+  :root {
+    --blue-deep:      #055F7D;
+    --blue-mid:       #077FA9;
+    --blue-light:     #2DB4D2;
+    --blue-pale:      #AAE0E8;
+    --blue-inter1:    #1085A5;
+    --blue-inter2:    #1B9BBB;
+    --bg:             #FFFFFF;
+    --gray-dark:      #53585F;
+    --gray-mid:       #7F7F7F;
+    --gray-light:     #C4C7CB;
+    --gray-xlight:    #E8E8E8;
+    --white:          #FFFFFF;
+    --green:          #27864A;
+    --yellow:         #D4860A;
+    --red:            #C0392B;
+    font-family: "Tahoma", "Geneva", sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--gray-dark);
+    max-width: 1400px;
+    min-height: 900px;
+    margin: 0 auto;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    position: relative;
+    background: linear-gradient(135deg, #0a0a0a 0%, #0d2a35 60%, #055F7D 100%);
+    padding: 36px 48px 32px;
+    border-bottom: 2px solid var(--blue-mid);
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(45,180,210,0.12) 0%, transparent 70%);
+    z-index: 0;
+  }
+  .header-logo {
+    height: 76px;
+    width: auto;
+    flex-shrink: 0;
+    /* transparenter Hintergrund: kein background-color, kein mix-blend-mode */
+  }
+  .header-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 8px;
+  }
+  .header-title {
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+  }
+  .header-title span { color: var(--blue-light); }
+  .header-sub {
+    margin-top: 8px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── GRID ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    padding: 26px 26px 22px;
+    border-right: 1px solid var(--gray-xlight);
+    border-bottom: 1px solid var(--gray-xlight);
+    position: relative;
+  }
+  .section:last-child, .section:nth-child(4) { border-right: none; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 13px;
+    border-bottom: 1px solid var(--gray-xlight);
+  }
+  .section-icon {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .icon-commands { background: linear-gradient(135deg, #055F7D, #077FA9); }
+  .icon-skills   { background: linear-gradient(135deg, #077FA9, #2DB4D2); }
+  .icon-agents   { background: linear-gradient(135deg, #1085A5, #1B9BBB); }
+  .icon-hooks    { background: linear-gradient(135deg, #055F7D, #2DB4D2); }
+
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--blue-deep);
+    line-height: 1.2;
+  }
+  .section-title-sub {
+    font-size: 11px;
+    color: var(--gray-mid);
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ── ITEMS ── */
+  .item {
+    margin-bottom: 9px;
+    padding: 9px 11px;
+    background: #F4F9FB;
+    border-radius: 6px;
+    border-left: 3px solid transparent;
+  }
+  .item-cmd   { border-left-color: var(--blue-deep); }
+  .item-skill { border-left-color: var(--blue-mid); }
+  .item-agent { border-left-color: var(--blue-inter2); }
+  .item-hook  { border-left-color: var(--yellow); }
+
+  .item-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    margin-bottom: 3px;
+    font-family: "Courier New", monospace;
+  }
+  .item-label.cmd   { color: var(--blue-light); }
+  .item-label.skill { color: var(--blue-pale); }
+  .item-label.agent { color: var(--blue-inter2); }
+  .item-label.hook  { color: #f0c060; }
+
+  .item-desc {
+    font-size: 11.5px;
+    color: var(--gray-dark);
+    line-height: 1.45;
+  }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+  .badge-blue   { background: rgba(7,127,169,0.2);  color: var(--blue-light); border: 1px solid rgba(45,180,210,0.3); }
+  .badge-hook { background: rgba(212,134,10,0.15); color: #f0c060; border: 1px solid rgba(212,134,10,0.4); }
+  .badge-gray   { background: rgba(196,199,203,0.1);color: var(--gray-light); border: 1px solid rgba(196,199,203,0.2); }
+  .badge-red    { background: rgba(192,57,43,0.2);  color: #e8857a;           border: 1px solid rgba(232,133,122,0.3); }
+  .badge-yellow { background: rgba(212,134,10,0.2); color: #f0c060;           border: 1px solid rgba(212,134,10,0.3); }
+
+  /* tags */
+  .tag {
+    display: inline-block;
+    background: rgba(170,224,232,0.08);
+    border: 1px solid rgba(170,224,232,0.15);
+    color: var(--blue-deep);
+    font-size: 10px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin: 2px 2px 0 0;
+  }
+  .tag-hook {
+    background: rgba(212,134,10,0.12);
+    border: 1px solid rgba(212,134,10,0.3);
+    color: #f0c060;
+  }
+
+  .highlight-box {
+    margin-top: 10px;
+    padding: 9px 11px;
+    background: rgba(5,95,125,0.06);
+    border: 1px solid rgba(45,180,210,0.35);
+    border-radius: 6px;
+    font-size: 11px;
+    color: var(--blue-deep);
+    line-height: 1.5;
+  }
+  .highlight-box-hook {
+    margin-top: 10px;
+    padding: 9px 11px;
+    background: rgba(212,134,10,0.08);
+    border: 1px solid rgba(212,134,10,0.4);
+    border-radius: 6px;
+    font-size: 11px;
+    color: var(--yellow);
+    line-height: 1.5;
+  }
+
+  .tip-box {
+    background: rgba(39,134,74,0.07);
+    border: 1px solid rgba(39,134,74,0.3);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 11px;
+    color: var(--green);
+    margin-top: 8px;
+    line-height: 1.45;
+  }
+  .tip-box::before { content: '💡 '; }
+
+  /* section bg tints */
+  .section:nth-child(1) { background: rgba(5,95,125,0.03); }
+  .section:nth-child(2) { background: rgba(7,127,169,0.03); }
+  .section:nth-child(3) { background: rgba(27,155,187,0.03); }
+  .section:nth-child(4) { background: rgba(212,134,10,0.05); }
+
+  /* ── FLOW STRIP ── */
+  .flow-strip {
+    grid-column: 1 / -1;
+    background: var(--blue-pale);
+    border-top: 2px solid var(--blue-mid);
+    padding: 20px 36px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .flow-step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+  }
+  .flow-dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--blue-mid);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+  }
+  .flow-dot-hook { background: var(--yellow); }
+  .flow-dot-green  { background: var(--green); }
+  .flow-text { font-size: 12px; color: var(--gray-dark); line-height: 1.3; }
+  .flow-text strong { color: var(--blue-light); display: block; font-size: 12px; }
+  .flow-text strong.hook { color: #f0c060; }
+  .flow-arrow { font-size: 18px; color: var(--blue-deep); margin: 0 8px; flex-shrink: 0; }
+
+  /* hook event pill */
+  .event-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 8px;
+    background: rgba(212,134,10,0.12);
+    border: 1px solid rgba(212,134,10,0.35);
+    border-radius: 4px;
+    font-size: 10.5px;
+    color: #f0c060;
+    font-family: "Courier New", monospace;
+    margin: 2px 3px 2px 0;
+  }
+  .event-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--yellow);
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;">
+    <div>
+      <div class="header-eyebrow">Referenzkarte · Claude Code</div>
+        <div class="header-title">Claude Code — <span>Commands · Skills · Subagents · Hooks</span></div>
+        <div class="header-sub">Schnellreferenz für den itonic Development Stack &nbsp;·&nbsp; ThinkStation P3 &nbsp;·&nbsp; 2026</div>
+    </div>
+    <img class="header-logo"
+        src="data:image/png;base64,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DobyHCzc/oHlwnr6eDFyWWaYabeaNlFJDaOTzEygtHlrWmPoO+Nm42Q027x1JtujJQuVQugDgCJc3gEARQh9AFCE0AcARQh9AFCE0AcARQh9AFCE0AcARQh9AFCE0AcARQh9AFCE0AcARQh9AFCE0AcARQj9V2Laj0JbrbJMU1Os6jsZW/C67clfXazDiGNrRmiOSre1Lg1XUUQeW+z9ox9rbFhuhP4rkF8+00jVitFjK9voxOg8zYztNDT4MzV/7yONrSnVjVehAZYZWyfScxBzbM+xf7RijA3Lj9B/HZsFRdzOJLzSX+RN177ZHPXM2EIDYj0zns05Pbm2Y0tkfKFjyz5W9QivRNLe3rUIz0FsBD3+RInKK5Ezw0aM+jsJrAvpsA2uv4s8trqMbSfS2MxZ61VgdWN2bObyTjNG9+8zjM2MK6hfN/lr/zBj6lKPCEIfABTh8g4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AihD4AKELoA4AWSZL8Pzpm0e4lb/FcAAAAAElFTkSuQmCC"
+        alt="itonic advisors"
+        style="filter:brightness(0) invert(1);">
+  </div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="grid">
+
+  <!-- ══ COMMANDS ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-commands">⌨️</div>
+      <div>
+        <div class="section-title">Commands</div>
+        <div class="section-title-sub">Terminal &amp; Slash-Kommandos</div>
+      </div>
+    </div>
+
+    <div class="badge badge-blue">Terminal</div>
+    <div class="item item-cmd">
+      <div class="item-label cmd">claude</div>
+      <div class="item-desc">Interaktive REPL-Session starten im aktuellen Verzeichnis</div>
+    </div>
+    <div class="item item-cmd">
+      <div class="item-label cmd">claude "prompt"</div>
+      <div class="item-desc">Einmaligen Task direkt ausführen ohne interaktive Session</div>
+    </div>
+    <div class="item item-cmd">
+      <div class="item-label cmd">claude -p "prompt"</div>
+      <div class="item-desc">Pipe-Modus: Output direkt in Terminal/Script weiterverwenden</div>
+    </div>
+    <div class="item item-cmd">
+      <div class="item-label cmd">claude --continue</div>
+      <div class="item-desc">Letzte Session fortsetzen — Kontext bleibt erhalten</div>
+    </div>
+    <div class="item item-cmd">
+      <div class="item-label cmd">claude --resume</div>
+      <div class="item-desc">Session aus Liste auswählen und fortsetzen</div>
+    </div>
+
+    <div class="badge badge-gray" style="margin-top:10px;">Slash-Kommandos (in Session)</div>
+    <div class="item item-cmd">
+      <div class="item-label cmd">/clear</div>
+      <div class="item-desc">Kontext zurücksetzen — neues Thema starten</div>
+    </div>
+    <div class="item item-cmd">
+      <div class="item-label cmd">/compact</div>
+      <div class="item-desc">Kontext komprimieren — Token sparen bei langen Sessions</div>
+    </div>
+    <div class="item item-cmd">
+      <div class="item-label cmd">/doctor</div>
+      <div class="item-desc">Konfiguration und Umgebung prüfen</div>
+    </div>
+    <div class="item item-cmd">
+      <div class="item-label cmd">/cost</div>
+      <div class="item-desc">Token-Verbrauch der aktuellen Session anzeigen</div>
+    </div>
+
+    <div class="highlight-box">
+      CLAUDE.md im Projekt-Root = automatischer Stack-Anker. Wird bei jedem Start geladen — kein manuelles Briefing nötig.
+    </div>
+  </div>
+
+  <!-- ══ SKILLS ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-skills">🧩</div>
+      <div>
+        <div class="section-title">Skills</div>
+        <div class="section-title-sub">Wiederverwendbare Spezialmodi</div>
+      </div>
+    </div>
+
+    <div class="badge badge-blue">itonic Skills (aktiv)</div>
+    <div class="item item-skill">
+      <div class="item-label skill">itonic-stack</div>
+      <div class="item-desc">Stack-Konventionen, Dateistruktur, Deployment-Regeln. Triggert bei Code-Aufgaben.</div>
+      <div class="tag">React</div><div class="tag">FastAPI</div><div class="tag">Docker</div>
+    </div>
+    <div class="item item-skill">
+      <div class="item-label skill">branding-itonic</div>
+      <div class="item-desc">Farben, Typografie, Logos, Komponentenmuster. Triggert bei UI-/Dok-Aufgaben.</div>
+      <div class="tag">Tahoma</div><div class="tag">#055F7D</div>
+    </div>
+    <div class="item item-skill">
+      <div class="item-label skill">vertec-api</div>
+      <div class="item-desc">Vertec REST-Anbindung in Python/Node.js — vtcrest, Projekte, Leistungen.</div>
+    </div>
+    <div class="item item-skill">
+      <div class="item-label skill">knowledge-to-obsidian</div>
+      <div class="item-desc">Wissensquellen zu verlinkten Obsidian-Notizen verarbeiten, Vault-QS.</div>
+    </div>
+    <div class="item item-skill">
+      <div class="item-label skill">token-tips</div>
+      <div class="item-desc">Chat analysieren und konkrete Token-Spar-Tipps liefern.</div>
+    </div>
+    <div class="item item-skill">
+      <div class="item-label skill">docx / pdf / pptx / xlsx</div>
+      <div class="item-desc">Dokumente und Präsentationen im itonic-Stil erstellen.</div>
+    </div>
+    <div class="item item-skill">
+      <div class="item-label skill">explain-code</div>
+      <div class="item-desc">Code mit visuellen Diagrammen erklären — für Reviews &amp; Onboarding.</div>
+    </div>
+
+    <div class="tip-box">
+      Skills triggern automatisch via Schlüsselwörter. Neue Skills unter /mnt/skills/user/ anlegen und in SKILL.md beschreiben.
+    </div>
+  </div>
+
+  <!-- ══ SUBAGENTS ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-agents">🤖</div>
+      <div>
+        <div class="section-title">Subagents</div>
+        <div class="section-title-sub">Parallele &amp; spezialisierte Agenten</div>
+      </div>
+    </div>
+
+    <div class="badge badge-blue">Konzept</div>
+    <div class="item item-agent">
+      <div class="item-label agent">Task Tool</div>
+      <div class="item-desc">Claude Code startet Subagenten via Task-Tool — parallele Ausführung mehrerer unabhängiger Aufgaben in eigenen Subshells.</div>
+    </div>
+    <div class="item item-agent">
+      <div class="item-label agent">Isolation</div>
+      <div class="item-desc">Jeder Subagent hat eigenen Kontext, eigene Dateizugänge — kein geteilter State zwischen Agenten.</div>
+    </div>
+
+    <div class="badge badge-blue" style="margin-top:4px;">Anwendungsfälle itonic</div>
+    <div class="item item-agent">
+      <div class="item-label agent">Multi-Repo Review</div>
+      <div class="item-desc">Frontend + Backend gleichzeitig reviewen — je ein Agent pro Repo.</div>
+      <div class="tag">bbs-net</div>
+    </div>
+    <div class="item item-agent">
+      <div class="item-label agent">Test-Pipeline</div>
+      <div class="item-desc">Vitest (Frontend) und pytest (Backend) parallel ausführen, Ergebnisse zusammenführen.</div>
+      <div class="tag">Vitest</div><div class="tag">pytest</div>
+    </div>
+    <div class="item item-agent">
+      <div class="item-label agent">Code + Dok parallel</div>
+      <div class="item-desc">Agent 1 generiert Code, Agent 2 erstellt parallel die .docx-Dokumentation.</div>
+      <div class="tag">docx</div>
+    </div>
+    <div class="item item-agent">
+      <div class="item-label agent">n8n Workflow-Agent</div>
+      <div class="item-desc">Claude API in n8n als Subagent — Workflows automatisieren via Anthropic-Node.</div>
+      <div class="tag">n8n</div>
+    </div>
+
+    <div class="highlight-box">
+      Best Practice: Subagenten brauchen eigene CLAUDE.md oder klare System-Prompts — sonst driften sie vom Stack ab.
+    </div>
+  </div>
+
+  <!-- ══ HOOKS ══ -->
+  <div class="section" style="border-right:none;">
+    <div class="section-header">
+      <div class="section-icon icon-hooks">🪝</div>
+      <div>
+        <div class="section-title">Hooks</div>
+        <div class="section-title-sub">Automatische Lifecycle-Aktionen</div>
+      </div>
+    </div>
+
+    <div class="badge badge-hook">Was sind Hooks?</div>
+    <div class="item item-hook">
+      <div class="item-label hook">Konzept</div>
+      <div class="item-desc">Shell-Befehle, die Claude Code automatisch an definierten Punkten im Workflow ausführt — unabhängig vom LLM.</div>
+    </div>
+    <div class="item item-hook">
+      <div class="item-label hook">Konfiguration</div>
+      <div class="item-desc">Definiert in <span style="font-family:monospace;color:#f0c060;">settings.json</span> (global) oder <span style="font-family:monospace;color:#f0c060;">CLAUDE.md</span> (projekt-lokal) unter dem <span style="font-family:monospace;color:#f0c060;">hooks</span>-Schlüssel.</div>
+    </div>
+
+    <div class="badge badge-hook" style="margin-top:4px;">Hook-Events</div>
+    <div style="margin-bottom:8px;">
+      <span class="event-pill"><span class="event-dot"></span>PreToolUse</span>
+      <span class="event-pill"><span class="event-dot"></span>PostToolUse</span>
+      <span class="event-pill"><span class="event-dot"></span>Notification</span>
+      <span class="event-pill"><span class="event-dot"></span>Stop</span>
+    </div>
+
+    <div class="item item-hook">
+      <div class="item-label hook">PreToolUse</div>
+      <div class="item-desc">Vor jedem Tool-Aufruf — z.B. Linting vor dem Schreiben einer Datei, Validierung, Logging.</div>
+    </div>
+    <div class="item item-hook">
+      <div class="item-label hook">PostToolUse</div>
+      <div class="item-desc">Nach jedem Tool-Aufruf — z.B. Auto-Format nach Dateiänderung, Tests triggern, Git-Stage.</div>
+    </div>
+    <div class="item item-hook">
+      <div class="item-label hook">Stop</div>
+      <div class="item-desc">Wenn Claude fertig ist — z.B. docker compose up --build automatisch starten, Benachrichtigung senden.</div>
+    </div>
+
+    <div class="badge badge-hook" style="margin-top:4px;">itonic Hook-Rezepte</div>
+    <div class="item item-hook">
+      <div class="item-label hook">Auto-Format on Write</div>
+      <div class="item-desc">PostToolUse → <span style="font-family:monospace;font-size:10.5px;color:#f0c060;">npx prettier --write</span> bei .ts/.tsx Dateien</div>
+      <div class="tag tag-hook">Frontend</div>
+    </div>
+    <div class="item item-hook">
+      <div class="item-label hook">pytest on Save</div>
+      <div class="item-desc">PostToolUse → <span style="font-family:monospace;font-size:10.5px;color:#f0c060;">pytest -x --tb=short</span> bei Python-Änderungen</div>
+      <div class="tag tag-hook">Backend</div>
+    </div>
+    <div class="item item-hook">
+      <div class="item-label hook">Auto-Deploy on Stop</div>
+      <div class="item-desc">Stop → <span style="font-family:monospace;font-size:10.5px;color:#f0c060;">docker compose up --build -d</span> auf bbs-net</div>
+      <div class="tag tag-hook">Docker</div>
+    </div>
+
+    <div class="highlight-box-hook">
+      Hooks laufen deterministisch — kein LLM, kein Zufall. Ideal für Qualitätssicherung und Deployment-Automatisierung im itonic Stack.
+    </div>
+  </div>
+
+  <!-- ══ FLOW STRIP ══ -->
+  <div class="flow-strip">
+    <div class="flow-step">
+      <div class="flow-dot">1</div>
+      <div class="flow-text">
+        <strong>CLAUDE.md laden</strong>
+        Stack-Kontext + Skills
+      </div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-dot">2</div>
+      <div class="flow-text">
+        <strong>Command</strong>
+        claude / Slash-Cmd
+      </div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-dot flow-dot-hook">🪝</div>
+      <div class="flow-text">
+        <strong class="hook">PreToolUse Hook</strong>
+        Lint / Validierung
+      </div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-dot">4</div>
+      <div class="flow-text">
+        <strong>Subagents</strong>
+        Parallele Tasks
+      </div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-dot flow-dot-hook">🪝</div>
+      <div class="flow-text">
+        <strong class="hook">PostToolUse Hook</strong>
+        Format / Tests / Git
+      </div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-dot flow-dot-hook">🪝</div>
+      <div class="flow-text">
+        <strong class="hook">Stop Hook</strong>
+        docker compose up --build
+      </div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-dot flow-dot-green">✓</div>
+      <div class="flow-text">
+        <strong>Deployed</strong>
+        bbs-net · http://app.intern
+      </div>
+    </div>
+  </div>
+
+</div><!-- /grid -->
+</body>
+</html>
