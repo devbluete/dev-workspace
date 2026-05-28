@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Challenge – itonic</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Tahoma", "Geneva", sans-serif;
+    background: #f4f8fa;
+    min-height: 100vh;
+  }
+  header {
+    background: linear-gradient(135deg, #055F7D 0%, #077FA9 100%);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 12px rgba(5,95,125,0.3);
+  }
+  .header-label { color: #AAE0E8; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+  .header-title { color: #fff; font-size: 20px; font-weight: 700; }
+  #btn-history {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: "Tahoma", "Geneva", sans-serif;
+    display: none;
+  }
+  .container { max-width: 680px; margin: 0 auto; padding: 20px 14px; }
+
+  .card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(5,95,125,0.09);
+    border: 1px solid #AAE0E8;
+    margin-bottom: 14px;
+  }
+
+  /* START */
+  #screen-start { text-align: center; }
+  #screen-start .big-emoji { font-size: 52px; margin-bottom: 14px; }
+  #screen-start h1 { color: #055F7D; font-size: 24px; margin-bottom: 12px; }
+  #screen-start p { color: #53585F; font-size: 14px; line-height: 1.7; max-width: 460px; margin: 0 auto 28px; }
+  .steps { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 28px; }
+  .step-chip {
+    background: #f4f8fa; border: 1px solid #AAE0E8;
+    border-radius: 10px; padding: 10px 18px;
+    font-size: 13px; color: #055F7D; font-weight: 700;
+  }
+
+  /* BUTTONS */
+  .btn-primary {
+    background: #077FA9; color: #fff; border: none;
+    padding: 13px 30px; border-radius: 10px;
+    font-size: 14px; font-weight: 700; cursor: pointer;
+    font-family: "Tahoma", "Geneva", sans-serif;
+    box-shadow: 0 4px 14px rgba(7,127,169,0.25);
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: #055F7D; }
+  .btn-primary:disabled { background: #C4C7CB; cursor: not-allowed; box-shadow: none; }
+  .btn-secondary {
+    background: transparent; border: 2px solid #077FA9;
+    color: #077FA9; padding: 11px 22px; border-radius: 10px;
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    font-family: "Tahoma", "Geneva", sans-serif;
+    transition: background 0.2s;
+  }
+  .btn-secondary:hover { background: #f4f8fa; }
+  .btn-ghost {
+    background: transparent; border: 1px solid #C4C7CB;
+    color: #7F7F7F; padding: 10px 18px; border-radius: 8px;
+    font-size: 13px; cursor: pointer;
+    font-family: "Tahoma", "Geneva", sans-serif;
+  }
+  .btn-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+  .btn-full { width: 100%; }
+
+  /* CHALLENGE */
+  .badge-kategorie { color: #077FA9; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+  .badge-level {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 8px; border-radius: 4px; margin-top: 4px;
+  }
+  .challenge-box {
+    background: #f4f8fa;
+    border: 1px solid #2DB4D2;
+    border-left: 4px solid #055F7D;
+    border-radius: 8px;
+    padding: 18px;
+    margin: 16px 0;
+  }
+  .challenge-box .label { color: #055F7D; font-weight: 700; font-size: 12px; margin-bottom: 8px; }
+  .challenge-box .text { color: #053545; font-size: 14px; line-height: 1.6; margin-bottom: 10px; }
+  .challenge-box .hint { color: #7F7F7F; font-size: 12px; border-top: 1px solid #C4C7CB; padding-top: 10px; }
+
+  textarea {
+    width: 100%; border: 2px solid #AAE0E8; border-radius: 8px;
+    padding: 13px; font-size: 14px; font-family: "Tahoma", "Geneva", sans-serif;
+    color: #53585F; resize: vertical; outline: none; line-height: 1.6;
+    transition: border-color 0.2s;
+  }
+  textarea:focus { border-color: #077FA9; }
+  .char-count { color: #7F7F7F; font-size: 12px; margin-top: 6px; }
+  .error-msg { color: #C0392B; font-size: 13px; margin-top: 10px; }
+
+  /* BEWERTUNG */
+  .wertung-header {
+    border-radius: 12px; padding: 24px; text-align: center; margin-bottom: 12px;
+  }
+  .wertung-emoji { font-size: 44px; margin-bottom: 8px; }
+  .wertung-label { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .wertung-urteil { font-size: 14px; color: #53585F; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  @media (max-width: 480px) { .two-col { grid-template-columns: 1fr; } }
+
+  .feedback-card { background: #fff; border-radius: 12px; padding: 18px; border: 1px solid #AAE0E8; }
+  .feedback-label { font-weight: 700; font-size: 11px; letter-spacing: 1px; margin-bottom: 10px; }
+  .feedback-item {
+    font-size: 13px; color: #53585F; margin-bottom: 8px;
+    padding-left: 10px; line-height: 1.5;
+  }
+  .border-green { border-left: 2px solid #27864A; }
+  .border-red { border-left: 2px solid #C0392B; }
+
+  .verbesserung-item { display: flex; gap: 10px; margin-bottom: 10px; font-size: 13px; color: #53585F; line-height: 1.5; }
+  .verbesserung-num { color: #077FA9; font-weight: 700; flex-shrink: 0; }
+
+  .improved-prompt {
+    background: #f4f8fa; border-radius: 12px; padding: 18px;
+    border: 1px solid #2DB4D2; border-left: 4px solid #055F7D; margin-bottom: 12px;
+  }
+  .improved-prompt .label { color: #055F7D; font-weight: 700; font-size: 11px; letter-spacing: 1px; margin-bottom: 10px; }
+  .improved-prompt p { color: #053545; font-size: 13px; line-height: 1.7; font-style: italic; }
+
+  .original-prompt { background: #fff; border-radius: 10px; padding: 14px 18px; border: 1px solid #E8E8E8; margin-bottom: 16px; }
+  .original-prompt .label { color: #7F7F7F; font-weight: 700; font-size: 11px; letter-spacing: 1px; margin-bottom: 6px; }
+  .original-prompt p { color: #53585F; font-size: 13px; line-height: 1.6; font-style: italic; }
+
+  /* HISTORY */
+  .score-circle {
+    background: #f4f8fa; border: 2px solid #077FA9;
+    border-radius: 50%; width: 64px; height: 64px;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; flex-shrink: 0;
+  }
+  .score-num { color: #055F7D; font-weight: 700; font-size: 20px; line-height: 1; }
+  .score-label { color: #7F7F7F; font-size: 9px; }
+  .score-row { display: flex; gap: 10px; margin-bottom: 18px; }
+  .score-box { flex: 1; border-radius: 8px; padding: 12px; text-align: center; }
+  .score-box .s-emoji { font-size: 18px; }
+  .score-box .s-num { font-weight: 700; font-size: 18px; }
+  .score-box .s-text { font-size: 10px; color: #7F7F7F; }
+
+  .history-item {
+    background: #f4f8fa; border-radius: 8px;
+    padding: 13px; margin-bottom: 10px;
+  }
+  .history-item-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+  .history-badge { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; }
+  .history-urteil { color: #7F7F7F; font-size: 11px; margin-bottom: 5px; }
+  .history-prompt { color: #53585F; font-size: 12px; font-style: italic; }
+
+  .loading-overlay {
+    position: fixed; inset: 0; background: rgba(5,95,125,0.15);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100; backdrop-filter: blur(2px);
+  }
+  .loading-box {
+    background: #fff; border-radius: 16px; padding: 36px 40px;
+    text-align: center; box-shadow: 0 8px 32px rgba(5,95,125,0.2);
+    border: 2px solid #AAE0E8;
+  }
+  .spinner {
+    width: 40px; height: 40px; border: 4px solid #AAE0E8;
+    border-top-color: #077FA9; border-radius: 50%;
+    animation: spin 0.8s linear infinite; margin: 0 auto 14px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="header-label">itonic Training</div>
+    <div class="header-title">🎯 Prompt Challenge</div>
+  </div>
+  <button id="btn-history">📊 <span id="played-count">0</span> gespielt</button>
+</header>
+
+<div class="container">
+
+  <!-- START -->
+  <div id="screen-start" class="card">
+    <div class="big-emoji">🎯</div>
+    <h1>Prompt Challenge</h1>
+    <p>Beweise deine Prompt-Engineering-Skills! Du bekommst eine Aufgabe, schreibst deinen besten Prompt — und eine KI bewertet ihn sofort.</p>
+    <div class="steps">
+      <div class="step-chip">📝 Aufgabe lesen</div>
+      <div class="step-chip">✍️ Prompt schreiben</div>
+      <div class="step-chip">🏆 KI-Feedback erhalten</div>
+    </div>
+    <button class="btn-primary" onclick="neueChallenge()">🚀 Spiel starten</button>
+  </div>
+
+  <!-- CHALLENGE -->
+  <div id="screen-challenge" class="hidden">
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <span id="ch-emoji" style="font-size:30px"></span>
+        <div>
+          <div class="badge-kategorie" id="ch-kategorie"></div>
+          <span class="badge-level" id="ch-level"></span>
+        </div>
+      </div>
+      <div class="challenge-box">
+        <div class="label">📌 DEINE AUFGABE</div>
+        <div class="text" id="ch-aufgabe"></div>
+        <div class="hint" id="ch-kontext"></div>
+      </div>
+    </div>
+    <div class="card">
+      <label style="color:#055F7D;font-weight:700;font-size:13px;display:block;margin-bottom:10px">✍️ DEIN PROMPT</label>
+      <textarea id="prompt-input" rows="5" placeholder="Schreibe hier deinen Prompt für die KI..." oninput="updateChar()"></textarea>
+      <div class="char-count"><span id="char-count">0</span> Zeichen</div>
+      <div id="error-msg" class="error-msg hidden"></div>
+      <div class="btn-row">
+        <button class="btn-ghost" onclick="neueChallenge()">🔄 Andere Aufgabe</button>
+        <button class="btn-primary" id="btn-bewerten" onclick="bewertePrompt()" disabled>🎯 Jetzt bewerten</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BEWERTUNG -->
+  <div id="screen-bewertung" class="hidden">
+    <div id="wertung-header" class="wertung-header">
+      <div class="wertung-emoji" id="w-emoji"></div>
+      <div class="wertung-label" id="w-label"></div>
+      <div class="wertung-urteil" id="w-urteil"></div>
+    </div>
+    <div class="two-col">
+      <div class="feedback-card" id="staerken-card">
+        <div class="feedback-label" style="color:#27864A">✅ STÄRKEN</div>
+        <div id="staerken-list"></div>
+      </div>
+      <div class="feedback-card" id="schwaechen-card">
+        <div class="feedback-label" style="color:#C0392B">⚠️ SCHWÄCHEN</div>
+        <div id="schwaechen-list"></div>
+      </div>
+    </div>
+    <div class="feedback-card" style="margin-bottom:12px">
+      <div class="feedback-label" style="color:#077FA9">🚀 VERBESSERUNGSVORSCHLÄGE</div>
+      <div id="verbesserungen-list"></div>
+    </div>
+    <div class="improved-prompt">
+      <div class="label">💎 BEISPIEL VERBESSERTER PROMPT</div>
+      <p id="improved-text"></p>
+    </div>
+    <div class="original-prompt">
+      <div class="label">DEIN EINGEREICHTER PROMPT</div>
+      <p id="original-text"></p>
+    </div>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="neueChallenge()">🎯 Nächste Challenge</button>
+      <button class="btn-secondary" onclick="showHistory()">📊 Verlauf</button>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div id="screen-history" class="hidden">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+        <div>
+          <h2 style="color:#055F7D;font-size:18px;margin-bottom:4px">📊 Deine Ergebnisse</h2>
+          <div style="color:#7F7F7F;font-size:12px"><span id="h-total">0</span> Runden gespielt</div>
+        </div>
+        <div class="score-circle">
+          <div class="score-num" id="h-score">0%</div>
+          <div class="score-label">Top-Score</div>
+        </div>
+      </div>
+      <div class="score-row">
+        <div class="score-box" style="background:#e8f5ee;border:1px solid #27864A">
+          <div class="s-emoji">🏆</div>
+          <div class="s-num" style="color:#27864A" id="h-count-1">0</div>
+          <div class="s-text">Sehr gut</div>
+        </div>
+        <div class="score-box" style="background:#fdf3e3;border:1px solid #D4860A">
+          <div class="s-emoji">⚡</div>
+          <div class="s-num" style="color:#D4860A" id="h-count-2">0</div>
+          <div class="s-text">Mittelmäßig</div>
+        </div>
+        <div class="score-box" style="background:#fbeaea;border:1px solid #C0392B">
+          <div class="s-emoji">🔧</div>
+          <div class="s-num" style="color:#C0392B" id="h-count-3">0</div>
+          <div class="s-text">Zu verbessern</div>
+        </div>
+      </div>
+      <div id="history-list"></div>
+    </div>
+    <button class="btn-primary btn-full" onclick="neueChallenge()">🎯 Weiter spielen</button>
+  </div>
+
+</div>
+
+<!-- LOADING -->
+<div id="loading" class="loading-overlay hidden">
+  <div class="loading-box">
+    <div class="spinner"></div>
+    <div style="color:#055F7D;font-weight:700;font-size:15px">KI bewertet deinen Prompt...</div>
+    <div style="color:#7F7F7F;font-size:12px;margin-top:6px">Einen Moment bitte</div>
+  </div>
+</div>
+
+<script>
+const CHALLENGES = [
+  { id:1, kategorie:"Texterstellung", emoji:"✍️", aufgabe:"Lass eine KI eine professionelle E-Mail schreiben, in der ein Projekttermin verschoben wird.", kontext:"💡 Ziel: Die E-Mail soll höflich, klar und handlungsorientiert sein — mit konkretem neuen Termin.", schwierigkeit:"Einsteiger" },
+  { id:2, kategorie:"Analyse", emoji:"🔍", aufgabe:"Bitte die KI, die Vor- und Nachteile von Remote Work für ein mittelständisches Unternehmen zu analysieren.", kontext:"💡 Ziel: Strukturierte, ausgewogene Analyse — keine einseitige Meinung.", schwierigkeit:"Mittel" },
+  { id:3, kategorie:"Kreativität", emoji:"💡", aufgabe:"Erstelle mit der KI 5 kreative Workshop-Namen für ein Agile Transformation Kick-off.", kontext:"💡 Ziel: Die Namen sollen einprägsam, motivierend und thematisch passend sein.", schwierigkeit:"Einsteiger" },
+  { id:4, kategorie:"Rollenspiel", emoji:"🎭", aufgabe:"Nutze die KI als kritischen Stakeholder, der einem Digitalisierungsprojekt skeptisch gegenübersteht.", kontext:"💡 Ziel: Realistische Einwände, um das eigene Pitch-Deck zu testen.", schwierigkeit:"Fortgeschritten" },
+  { id:5, kategorie:"Zusammenfassung", emoji:"📋", aufgabe:"Lass die KI ein 10-seitiges Strategiepapier auf eine Executive Summary von 5 Sätzen komprimieren.", kontext:"💡 Ziel: Kernaussagen erhalten, Details weglassen — managertauglich formuliert.", schwierigkeit:"Mittel" },
+  { id:6, kategorie:"Code & Technik", emoji:"💻", aufgabe:"Bitte die KI, eine einfache Python-Funktion zu schreiben, die eine Liste nach Häufigkeit sortiert.", kontext:"💡 Ziel: Funktionierender Code, gut kommentiert, mit Beispielaufruf.", schwierigkeit:"Mittel" },
+  { id:7, kategorie:"Coaching", emoji:"🧭", aufgabe:"Nutze die KI als Coach, um einem Team-Mitglied zu helfen, das sich überlastet fühlt.", kontext:"💡 Ziel: Empathisches, lösungsorientiertes Coaching-Gespräch — keine direkten Ratschläge.", schwierigkeit:"Fortgeschritten" },
+  { id:8, kategorie:"Recherche", emoji:"🔎", aufgabe:"Frage die KI nach den Top-3 Risiken bei der Einführung eines neuen ERP-Systems.", kontext:"💡 Ziel: Fundierte, praxisnahe Antworten mit Quellenhinweisen oder Begründungen.", schwierigkeit:"Einsteiger" },
+];
+
+const LEVEL_COLOR = { Einsteiger:"#27864A", Mittel:"#D4860A", Fortgeschritten:"#C0392B" };
+const WERTUNG = {
+  1: { label:"Sehr gut", emoji:"🏆", color:"#27864A", bg:"#e8f5ee", border:"#27864A" },
+  2: { label:"Mittelmäßig", emoji:"⚡", color:"#D4860A", bg:"#fdf3e3", border:"#D4860A" },
+  3: { label:"Zu verbessern", emoji:"🔧", color:"#C0392B", bg:"#fbeaea", border:"#C0392B" },
+};
+
+let aktuelleChallenge = null;
+let verlauf = [];
+
+function show(id) {
+  ["screen-start","screen-challenge","screen-bewertung","screen-history"].forEach(s => {
+    document.getElementById(s).classList.add("hidden");
+  });
+  document.getElementById(id).classList.remove("hidden");
+}
+
+function neueChallenge() {
+  const verbleibend = CHALLENGES.filter(c => !verlauf.some(v => v.challengeId === c.id));
+  const pool = verbleibend.length > 0 ? verbleibend : CHALLENGES;
+  aktuelleChallenge = pool[Math.floor(Math.random() * pool.length)];
+
+  document.getElementById("ch-emoji").textContent = aktuelleChallenge.emoji;
+  document.getElementById("ch-kategorie").textContent = aktuelleChallenge.kategorie;
+  const lvl = document.getElementById("ch-level");
+  lvl.textContent = aktuelleChallenge.schwierigkeit;
+  lvl.style.background = LEVEL_COLOR[aktuelleChallenge.schwierigkeit] + "18";
+  lvl.style.color = LEVEL_COLOR[aktuelleChallenge.schwierigkeit];
+  document.getElementById("ch-aufgabe").textContent = aktuelleChallenge.aufgabe;
+  document.getElementById("ch-kontext").textContent = aktuelleChallenge.kontext;
+  document.getElementById("prompt-input").value = "";
+  document.getElementById("char-count").textContent = "0";
+  document.getElementById("btn-bewerten").disabled = true;
+  document.getElementById("error-msg").classList.add("hidden");
+
+  show("screen-challenge");
+}
+
+function updateChar() {
+  const val = document.getElementById("prompt-input").value;
+  document.getElementById("char-count").textContent = val.length;
+  document.getElementById("btn-bewerten").disabled = val.trim().length === 0;
+}
+
+async function bewertePrompt() {
+  const promptText = document.getElementById("prompt-input").value.trim();
+  if (!promptText) return;
+
+  document.getElementById("loading").classList.remove("hidden");
+  document.getElementById("error-msg").classList.add("hidden");
+
+  const systemPrompt = `Du bist ein Prompt-Engineering-Experte und Trainer. Bewerte den eingereichten Prompt:
+1 = Sehr gut (klar, spezifisch, kontextuell, zielorientiert)
+2 = Mittelmäßig (grundsätzlich ok, aber verbesserungswürdig)
+3 = Zu verbessern (vage, unklar, fehlt Kontext)
+
+Antworte NUR als JSON, kein Markdown:
+{"wertung":1,"kurzurteil":"...","staerken":["..."],"schwaechen":["..."],"verbesserungen":["..."],"verbesserter_prompt":"..."}`;
+
+  const userMsg = `Aufgabe: "${aktuelleChallenge.aufgabe}"\nZiel: ${aktuelleChallenge.kontext}\n\nEingereichter Prompt:\n"${promptText}"\n\nBitte bewerte diesen Prompt.`;
+
+  try {
+    const resp = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{ role: "user", content: userMsg }]
+      })
+    });
+    const data = await resp.json();
+    const raw = (data.content?.[0]?.text || "").replace(/```json|```/g,"").trim();
+    const b = JSON.parse(raw);
+
+    verlauf.unshift({ challengeId: aktuelleChallenge.id, challenge: aktuelleChallenge, prompt: promptText, wertung: b.wertung, kurzurteil: b.kurzurteil });
+
+    // Render Bewertung
+    const w = WERTUNG[b.wertung];
+    const wh = document.getElementById("wertung-header");
+    wh.style.background = w.bg;
+    wh.style.border = `2px solid ${w.border}`;
+    wh.style.borderRadius = "12px";
+    wh.style.marginBottom = "12px";
+    document.getElementById("w-emoji").textContent = w.emoji;
+    document.getElementById("w-label").textContent = w.label;
+    document.getElementById("w-label").style.color = w.color;
+    document.getElementById("w-urteil").textContent = b.kurzurteil;
+
+    document.getElementById("staerken-list").innerHTML = (b.staerken||[]).map(s => `<div class="feedback-item border-green">${s}</div>`).join("");
+    document.getElementById("schwaechen-list").innerHTML = (b.schwaechen||[]).map(s => `<div class="feedback-item border-red">${s}</div>`).join("");
+    document.getElementById("verbesserungen-list").innerHTML = (b.verbesserungen||[]).map((v,i) => `<div class="verbesserung-item"><span class="verbesserung-num">${i+1}.</span>${v}</div>`).join("");
+    document.getElementById("improved-text").textContent = `"${b.verbesserter_prompt}"`;
+    document.getElementById("original-text").textContent = `"${promptText}"`;
+
+    updateHistoryBtn();
+    show("screen-bewertung");
+
+  } catch(e) {
+    document.getElementById("error-msg").textContent = "⚠️ Bewertung fehlgeschlagen. Bitte erneut versuchen.";
+    document.getElementById("error-msg").classList.remove("hidden");
+  }
+  document.getElementById("loading").classList.add("hidden");
+}
+
+function showHistory() {
+  const total = verlauf.length;
+  const c1 = verlauf.filter(v=>v.wertung===1).length;
+  const c2 = verlauf.filter(v=>v.wertung===2).length;
+  const c3 = verlauf.filter(v=>v.wertung===3).length;
+  const score = total > 0 ? Math.round(c1/total*100) : 0;
+
+  document.getElementById("h-total").textContent = total;
+  document.getElementById("h-score").textContent = score + "%";
+  document.getElementById("h-count-1").textContent = c1;
+  document.getElementById("h-count-2").textContent = c2;
+  document.getElementById("h-count-3").textContent = c3;
+
+  document.getElementById("history-list").innerHTML = verlauf.map(item => {
+    const w = WERTUNG[item.wertung];
+    const preview = item.prompt.length > 100 ? item.prompt.substring(0,100) + "..." : item.prompt;
+    return `<div class="history-item" style="border:1px solid ${w.color}40">
+      <div class="history-item-top">
+        <div style="color:#055F7D;font-weight:700;font-size:13px">${item.challenge.emoji} ${item.challenge.kategorie}</div>
+        <div class="history-badge" style="background:${w.bg};color:${w.color};border:1px solid ${w.color}">${w.emoji} ${w.label}</div>
+      </div>
+      <div class="history-urteil">${item.kurzurteil}</div>
+      <div class="history-prompt">„${preview}"</div>
+    </div>`;
+  }).join("");
+
+  show("screen-history");
+}
+
+function updateHistoryBtn() {
+  const btn = document.getElementById("btn-history");
+  if (verlauf.length > 0) {
+    btn.style.display = "block";
+    document.getElementById("played-count").textContent = verlauf.length;
+  }
+}
+
+document.getElementById("btn-history").addEventListener("click", showHistory);
+</script>
+</body>
+</html>
