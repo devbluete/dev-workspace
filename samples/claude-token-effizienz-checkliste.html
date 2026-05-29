@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Token-Effizienz Checkliste 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --itonic-blue-deep: #055F7D;
+            --itonic-blue-mid: #077FA9;
+            --itonic-blue-light: #2DB4D2;
+            --itonic-blue-pale: #AAE0E8;
+            --itonic-gray-dark: #53585F;
+            --itonic-gray-mid: #7F7F7F;
+            --itonic-gray-light: #C4C7CB;
+            --itonic-white: #FFFFFF;
+            --itonic-red: #C0392B;
+            --itonic-yellow: #D4860A;
+            --itonic-green: #27864A;
+            --itonic-gray-xlight: #E8E8E8;
+        }
+
+        body {
+            font-family: "Tahoma", "Geneva", sans-serif;
+            background: linear-gradient(135deg, var(--itonic-white) 0%, var(--itonic-blue-pale) 100%);
+            color: var(--itonic-gray-dark);
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: var(--itonic-blue-deep);
+            color: var(--itonic-white);
+            padding: 3rem 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.05rem;
+            opacity: 0.95;
+        }
+
+        .intro-box {
+            background: var(--itonic-blue-pale);
+            border-left: 4px solid var(--itonic-blue-mid);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 6px;
+        }
+
+        .intro-box strong {
+            color: var(--itonic-blue-deep);
+        }
+
+        .section {
+            background: var(--itonic-white);
+            border: 1px solid var(--itonic-gray-light);
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, var(--itonic-blue-mid) 0%, var(--itonic-blue-light) 100%);
+            color: var(--itonic-white);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .section-header:hover {
+            background: linear-gradient(135deg, var(--itonic-blue-deep) 0%, var(--itonic-blue-mid) 100%);
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .section-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex: 1;
+        }
+
+        .impact-badge {
+            display: inline-block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            margin-left: auto;
+        }
+
+        .impact-high {
+            background: var(--itonic-red);
+            color: var(--itonic-white);
+        }
+
+        .impact-medium {
+            background: var(--itonic-yellow);
+            color: var(--itonic-white);
+        }
+
+        .impact-low {
+            background: var(--itonic-green);
+            color: var(--itonic-white);
+        }
+
+        .section-content {
+            padding: 1.5rem;
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+            padding: 1rem;
+            background: var(--itonic-gray-xlight);
+            border-radius: 6px;
+            border-left: 3px solid var(--itonic-blue-light);
+        }
+
+        .checklist-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .checklist-item.checked {
+            opacity: 0.6;
+            background: #F0F0F0;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-top: 0.25rem;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            accent-color: var(--itonic-blue-mid);
+        }
+
+        .item-text h4 {
+            margin-bottom: 0.3rem;
+            color: var(--itonic-blue-deep);
+            font-weight: 700;
+        }
+
+        .item-text p {
+            font-size: 0.95rem;
+            color: var(--itonic-gray-mid);
+            margin-bottom: 0.5rem;
+        }
+
+        .savings-hint {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--itonic-green);
+            background: rgba(39, 134, 74, 0.1);
+            padding: 0.5rem 0.8rem;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: var(--itonic-blue-pale);
+            border-radius: 8px;
+            border: 1px solid var(--itonic-blue-light);
+        }
+
+        .footer p {
+            color: var(--itonic-gray-dark);
+            font-size: 0.95rem;
+        }
+
+        .footer a {
+            color: var(--itonic-blue-mid);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .stats {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            background: var(--itonic-white);
+            border: 2px solid var(--itonic-blue-light);
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--itonic-blue-deep);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--itonic-gray-mid);
+            margin-top: 0.3rem;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.6rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .impact-badge {
+                margin-left: 0;
+                margin-top: 0.5rem;
+            }
+
+            .stats {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ Claude Token-Effizienz Checkliste</h1>
+            <p>Praktische Tipps für Mai 2026 — sinnvoll arbeiten, Token nicht verschwenden</p>
+        </header>
+
+        <div class="intro-box">
+            <strong>🎯 Ziel:</strong> Diese Checkliste zeigt dir konkrete Maßnahmen, um mit Claude effizienter zu arbeiten und unnötige Kosten zu sparen. Kategorisiert nach Impact und Use-Case.
+            <br><br>
+            <strong>💡 Tipp:</strong> Öffne die Kategorien, durchlaufe sie, und setz Checkboxen bei umgesetzten Maßnahmen. So entsteht dein persönliches Token-Spar-Profil.
+        </div>
+
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number">~80%</div>
+                <div class="stat-label">Einsparung mit richtigem Modell</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">~20x</div>
+                <div class="stat-label">Kostenunterschied Haiku ↔ Opus</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">~5x</div>
+                <div class="stat-label">Kostenunterschied Sonnet ↔ Opus</div>
+            </div>
+        </div>
+
+        <!-- 1. MODELLWAHL -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-icon">🤖</span>
+                <span class="section-title">1. Richtige Modellwahl</span>
+                <span class="impact-badge impact-high">HÖCHST WICHTIG</span>
+            </div>
+            <div class="section-content">
+                <div class="checklist-item">
+                    <input type="checkbox" id="c1">
+                    <div class="item-text">
+                        <h4>Haiku für einfache Aufgaben nutzen</h4>
+                        <p>Zusammenfassungen, Übersetzungen, einfache Formatierungen, Datenextraktion aus strukturierten Text → immer Haiku verwenden.</p>
+                        <div class="savings-hint">💰 Spart ~80% Kosten gegenüber Opus</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <input type="checkbox" id="c2">
+                    <div class="item-text">
+                        <h4>Sonnet für moderate Aufgaben</h4>
+                        <p>Textentwürfe, Code-Snippets, mittelständige Analyse, kreative Inhalte → Sonnet ist das Arbeitstier für den Alltag.</p>
+                        <div class="savings-hint">💰 Gutes Preis-Leistungs-Verhältnis (~20% von Opus)</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <input type="checkbox" id="c3">
+                    <div class="item-text">
+                        <h4>Opus nur für komplexe Probleme</h4>
+                        <p>Mehrstufenlogik, tiefes Reasoning, komplexe Architekturentscheidungen → wirklich nur dann nutzen, wenn die anderen Modelle nicht reichen.</p>
+                        <div class="savings-hint">💰 Nutze die erste Antwort von Sonnet, bevor du zu Opus greifst</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. KONTEXTGRÖSSE -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-icon">📏</span>
+                <span class="section-title">2. Kontextgröße & Wiederholungen vermeiden</span>
+                <span class="impact-badge impact-high">HÖCHST WICHTIG</span>
+            </div>
+            <div class="section-content">
+                <div class="checklist-item">
+                    <input type="checkbox" id="c4">
+                    <div class="item-text">
+                        <h4>Nur relevante Dokumente hochladen</h4>
+                        <p>Nicht die ganze Datei hochladen — kopiere nur die relevanten Absätze oder Seiten. Jedes zusätzliche Wort kostet Tokens.</p>
+                        <div class="savings-hint">💰 50 Seite einer PDF hochladen statt 500</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <input type="checkbox" id="c5">
+                    <div class="item-text">
+                        <h4>Wiederholten Kontext auslagern (Projekte)</h4>
+                        <p>Wenn du denselben Kontext (Codebase, Richtlinien, Anweisungen) in mehreren Chats nutzt → in ein Claude-Projekt als Dokument ablegen und per Referenz einbinden.</p>
+                        <div class="savings-hint">💰 Erspart Dir 1000+ Tokens pro Chat</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <input type="checkbox" id="c6">
+                    <div class="item-text">
+                        <h4>Lange Konversationen segmentieren</h4>
+                        <p>Wenn ein Chat über 30–40 Turns wird → neuen Chat starten. Claude kann dann mit frischem Kopf ansetzen, und die alte Konversationshistorie kostet keine Tokens mehr.</p>
+                        <div class="savings-hint">💰 Verhindert exponentielles Token-Wachstum</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <input type="checkbox" id="c7">
+                    <div class="item-text">
+                        <h4>System Prompts (Anweisungen) in Projekte</h4>
+                        <p>Wiederkehrende Anweisungen (dein Schreibstil, Formatierungsregeln, spezifisches Kontext-Setup) → einmalig im Projekt als System Prompt setzen, nicht in jedem Turn wiederholen.</p>
+                        <div class="savings-hint">💰 Spart hunderte von Tokens pro Chat</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. PROMPT-EFFIZIENZ -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-icon">✍️</span>
+                <span class="section-title">3. Prompt-Effizienz</span>
+                <span class="impact-badge impact-medium">WICHTIG</span>
+            </div>
+            <div class="section-content">
+                <div class="checklist-item">
+                    <input type="checkbox" id="c8">
+                    <div class="item-text">
+                        <h4>Fülltexte reduzieren</h4>
+                        <p>Statt „Könntest du bitte vielleicht..." → „Erstelle [X]". Direkt, präzise, kein Höflichkeitsfett.</p>
+                        <div class="savings-hint">💰 Spart 10–15% Kontext-Overhead</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <input type="checkbox" id="c9">
+                    <div class="item-text">
+                        <h4>Mehrere kleine Fragen bündeln</h4>
+                        <p>Statt 3 separate Prompts → eine Frage mit 3 Unterpunkten stellen. Claude verarbeitet es effizienter.</p>
+                        <div class="savings-hint">💰 Spart ~25% durch Konsolidierung</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <input type="checkbox" id="c10">
+                    <div class="item-text">
+                        <h4>Längenangaben geben</h4>
+                        <p>„Antworte in max. 3 Sätzen" oder „nur die Schlüsselpunkte" steuert die Antwortlänge und spart Tokens bei der Ausgabe.</p>
+                        <div class="savings-hint">💰 Verhindert unnötig lange Antworten</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <input type="checkbox" id="c11">
+                    <div class="item-text">
+                        <h4>Formatierungsvorgaben konkret machen</h4>
+                        <p>Statt „formatiere schön" → „als Markdown-Tabelle mit 4 Spalten" oder „JSON mit folgender Struktur" → Claude generiert exakt das Gewollte ohne Umweg.</p>
+                        <div class="savings-hint">💰 Spart Iterationen & Umformatierungen</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. ANTWORTLÄNGE KONTROLLIEREN -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-icon">📝</span>
+                <span class="section-title">4. Antwortlängen-Kontrolle</span>
+                <span class="impact-badge impact-medium">WICHTIG</span>
+            </div>
+            <div class="section-content">
+                <div class="checklist-item">
+                    <input type="checkbox" id="c12">
+                    <div class="item-text">
+                        <h4>Output Tokens bewusst steuern</h4>
+                        <p>Input-Tokens sind oft eine Seite, Output kann aber 3x oder 10x größer werden, wenn Claude keine Grenzen hat. Setze ein Ziel: „max. 200 Wörter" oder „Bullet Points".</p>
+                        <div class="savings-hint">💰 Kann die Kosten einer Antwort halbieren</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <input type="checkbox" id="c13">
+                    <div class="item-text">
+                        <h4>Explizite Strukturvorgaben nutzen</h4>
+                        <p>Statt freien Text → „Antworte nur als JSON mit Key: Value" oder „3 Bullets, je max 30 Wörter" reduziert Overhead und Speichulation.</p>
+                        <div class="savings-hint">💰 Spart 20–30% der Output-Tokens</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <input type="checkbox" id="c14">
+                    <div class="item-text">
+                        <h4>Beispiel-Output vorgeben</h4>
+                        <p>Statt zu beschreiben, was du brauchst → ein echtes Beispiel hinzufügen. Claude orientiert sich an der Länge und Struktur des Beispiels.</p>
+                        <div class="savings-hint">💰 Effektiver als lange Beschreibungen</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. ITERATIONSSCHLEIFEN VERMEIDEN -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-icon">🔄</span>
+                <span class="section-title">5. Iterationsschleifen optimieren</span>
+                <span class="impact-badge impact-medium">WICHTIG</span>
+            </div>
+            <div class="section-content">
+                <div class="checklist-item">
+                    <input type="checkbox" id="c15">
+                    <div class="item-text">
+                        <h4>Klare Anforderungen upfront</h4>
+                        <p>Je unklar die erste Anfrage, desto mehr Iterationen brauchst du. 5 Minuten extra für einen präzisen Prompt spart 10 Umformulierungen.</p>
+                        <div class="savings-hint">💰 Spart das Zehnfache an Tokens</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <input type="checkbox" id="c16">
+                    <div class="item-text">
+                        <h4>Optionen statt Iterationen</h4>
+                        <p>Statt Claude zu sagen „das ist falsch, versuch nochmal" → „zeige mir 2–3 Optionen, dann wähle ich". Schneller, klarer, Token-effizienter.</p>
+                        <div class="savings-hint">💰 Braucht oft nur eine Frage statt drei</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <input type="checkbox" id="c17">
+                    <div class="item-text">
+                        <h4>Frühe Feedback-Schleifen</h4>
+                        <p>Nach einer Antwort: kurzes Feedback statt Neustart. „Zu lang → kürzen" ist billiger als „vergiss das, fang neu an".</p>
+                        <div class="savings-hint">💰 Nachsteuerung ist günstiger als Neustart</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. PROJEKTE & RESSOURCEN -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-icon">📁</span>
+                <span class="section-title">6. Projekte & persistente Ressourcen nutzen</span>
+                <span class="impact-badge impact-low">EMPFOHLEN</span>
+            </div>
+            <div class="section-content">
+                <div class="checklist-item">
+                    <input type="checkbox" id="c18">
+                    <div class="item-text">
+                        <h4>Wiederverwendbare Vorlagen als Projektdokumente</h4>
+                        <p>Deine Standard-Codebase, Designrichtlinien, Stil-Guides → einmalig in ein Projekt hochladen, in jedem neuen Chat via Referenz einbinden.</p>
+                        <div class="savings-hint">💰 Kumulatives Sparpotenzial sehr hoch</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <input type="checkbox" id="c19">
+                    <div class="item-text">
+                        <h4>Projektanweisungen für wiederkehrende Konventionen</h4>
+                        <p>„Schreib immer in Markdown", „nutze itonic-Branding", „verwende Tahoma-Font" → in die Projektanweisungen, nicht in jeden Chat tippen.</p>
+                        <div class="savings-hint">💰 Spart hunderte von Tokens über Zeit</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <input type="checkbox" id="c20">
+                    <div class="item-text">
+                        <h4>Archive abgelaufener Projekte</h4>
+                        <p>Alte Chats & Projekte, die du nicht mehr brauchst → archivieren. Streamlined Zugriff, weniger Ablenkung, schnellere Navigation.</p>
+                        <div class="savings-hint">💰 Keine Token-Ersparnis, aber bessere Produktivität</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. SPEZIALFÄLLE & ADVANCED -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-icon">🚀</span>
+                <span class="section-title">7. Advanced: Batch Processing & API</span>
+                <span class="impact-badge impact-low">FÜR POWER-USER</span>
+            </div>
+            <div class="section-content">
+                <div class="checklist-item">
+                    <input type="checkbox" id="c21">
+                    <div class="item-text">
+                        <h4>Batch API für wiederkehrende Jobs</h4>
+                        <p>Wenn du täglich 100+ ähnliche Prompts abschickst → Batch API nutzen (API). 50% Rabatt, aber asynchron (nicht live).</p>
+                        <div class="savings-hint">💰 50% Kostenreduktion für Batch-Jobs</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <input type="checkbox" id="c22">
+                    <div class="item-text">
+                        <h4>Prompt Caching für häufige Kontexte</h4>
+                        <p>Bei der API: Längere, stabile Kontexte (z.B. deine ganze Codebase) mit Prompt Caching speichern → wird zwischen Requests wiederverwendet (90% Kostenersparnis!).</p>
+                        <div class="savings-hint">💰 Bis zu 90% Einsparung bei wiederholten Kontexten</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <input type="checkbox" id="c23">
+                    <div class="item-text">
+                        <h4>Claude Code für größere Aufgaben</h4>
+                        <p>Complex Entwicklung → Claude Code nutzen. Dort kannst du iterativ arbeiten, und die Costs sind transparenter pro Projekt verwaltet.</p>
+                        <div class="savings-hint">💰 Bessere Übersicht, weniger Umgang</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8. MONITORING & GEWOHNHEITEN -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-icon">📊</span>
+                <span class="section-title">8. Monitoring & gute Gewohnheiten</span>
+                <span class="impact-badge impact-medium">WICHTIG</span>
+            </div>
+            <div class="section-content">
+                <div class="checklist-item">
+                    <input type="checkbox" id="c24">
+                    <div class="item-text">
+                        <h4>Periodische Token-Audits</h4>
+                        <p>Einmal pro Monat deine 3–4 größten Chats ansehen → waren die Modellwahl und Kontextgröße sinnvoll? Was hättest du anders machen können?</p>
+                        <div class="savings-hint">💰 Lernen = kontinuierliche Optimierung</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <input type="checkbox" id="c25">
+                    <div class="item-text">
+                        <h4>„Copy & Paste"-Vorlagen für Standard-Prompts</h4>
+                        <p>Deine häufigsten Prompts → als Snippets speichern (z.B. in Obsidian, OneNote, Snippet-Manager). Schneller, konsistenter, Token-sparend.</p>
+                        <div class="savings-hint">💰 Keine Extra-Kosten, aber schneller</div>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <input type="checkbox" id="c26">
+                    <div class="item-text">
+                        <h4>Dokumentiere deine Learnings</h4>
+                        <p>Nach jedem größeren Projekt: „Was hätte ich Token-technisch besser machen können?" Notieren, ins nächste Projekt übertragen.</p>
+                        <div class="savings-hint">💰 Feedback-Loop = beste Optimierung</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>🌀 Pro-Tipp:</strong> Diese Checkliste ist lebendig. Je mehr Chats du machst, desto besser wirst du darin, Token zu sparen. Nutze die token-tips-Funktion nach abgeschlossenen Chats, um konkrete Verbesserungen zu identifizieren.</p>
+            <br>
+            <p>📅 <strong>Stand:</strong> Mai 2026 | <strong>Gültig für:</strong> Claude 3.5+ Familie (Haiku, Sonnet, Opus)</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleSection(header) {
+            const content = header.nextElementSibling;
+            content.classList.toggle('active');
+            
+            // Smooth scroll to section if opening
+            if (content.classList.contains('active')) {
+                setTimeout(() => {
+                    header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+        }
+
+        // Erste Sektion automatisch öffnen
+        document.addEventListener('DOMContentLoaded', () => {
+            const firstSection = document.querySelector('.section-content');
+            if (firstSection) {
+                firstSection.classList.add('active');
+            }
+
+            // Checkboxen verwalten
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const item = this.closest('.checklist-item');
+                    if (this.checked) {
+                        item.classList.add('checked');
+                    } else {
+                        item.classList.remove('checked');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
