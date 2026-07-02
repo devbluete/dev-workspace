@@ -3,101 +3,76 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Invoice Reader – Lösungsübersicht</title>
+<title>Invoice Reader – Systemarchitektur</title>
 <style>
   :root {
-    --itonic-blue-deep:  #055F7D;
-    --itonic-blue-mid:   #077FA9;
-    --itonic-blue-light: #2DB4D2;
-    --itonic-blue-pale:  #AAE0E8;
-    --itonic-gray-dark:  #53585F;
-    --itonic-gray-mid:   #7F7F7F;
-    --itonic-gray-light: #C4C7CB;
-    --itonic-white:      #FFFFFF;
-    --itonic-green:      #27864A;
-    --itonic-yellow:     #D4860A;
-    font-family: "Tahoma", "Geneva", sans-serif;
+    --blue-deep: #055F7D;
+    --blue-mid: #077FA9;
+    --blue-light: #2DB4D2;
+    --blue-pale: #AAE0E8;
+    --gray-dark: #53585F;
+    --gray-mid: #7F7F7F;
+    --gray-light: #C4C7CB;
+    --gray-xlight: #E8E8E8;
+    --navy: #1A5276;
+    --red: #C0392B;
+    --yellow: #D4860A;
+    --green: #27864A;
+    --white: #FFFFFF;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
     font-family: "Tahoma", "Geneva", sans-serif;
-    background: #f0f4f7;
-    color: var(--itonic-gray-dark);
-    padding: 32px;
-    min-width: 1050px;
+    background: #f4f6f8;
+    color: var(--gray-dark);
+    padding: 24px;
+    min-width: 1100px;
   }
 
-  /* ── Header ── */
   .page-header {
-    background: var(--itonic-blue-deep);
+    background: linear-gradient(135deg, #033d52 0%, var(--blue-deep) 50%, var(--navy) 100%);
     border-radius: 14px;
     padding: 28px 36px;
     color: white;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 6px 24px rgba(5,95,125,0.25);
   }
-  .header-left h1 {
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-    margin-bottom: 6px;
-  }
-  .header-left p {
-    font-size: 13px;
-    opacity: 0.75;
-    font-weight: 400;
-  }
-  .header-logo {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 6px;
-  }
-  .header-badges {
-    display: flex;
-    gap: 10px;
-    margin-top: 8px;
-  }
+  .page-header h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.3px; }
+  .page-header p  { font-size: 13px; opacity: 0.75; margin-top: 6px; }
+  .header-badges { display: flex; gap: 10px; flex-shrink: 0; }
   .header-badge {
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.22);
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
     border-radius: 8px;
-    padding: 8px 16px;
+    padding: 8px 14px;
     text-align: center;
     font-size: 11px;
     color: rgba(255,255,255,0.85);
-    min-width: 110px;
+    min-width: 100px;
   }
-  .header-badge strong {
-    display: block;
-    font-size: 22px;
-    font-weight: 700;
-    color: white;
-    margin-bottom: 2px;
-  }
+  .header-badge strong { display: block; font-size: 20px; font-weight: 700; color: white; }
 
-  /* ── Main flow layout ── */
-  .main-flow {
+  .diagram-grid {
     display: grid;
-    grid-template-columns: 1fr 48px 1fr;
+    grid-template-columns: 1fr 56px 1fr;
     gap: 0;
     align-items: start;
-    margin-bottom: 20px;
   }
 
-  /* ── Process lane ── */
-  .lane {
+  .swimlane {
     background: white;
     border-radius: 14px;
     overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    box-shadow: 0 3px 16px rgba(0,0,0,0.06);
   }
-  .lane-header {
-    padding: 14px 20px;
+
+  .swimlane-header {
+    padding: 16px 20px;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -105,318 +80,394 @@
     font-weight: 700;
     font-size: 14px;
   }
-  .lane-header .badge {
+  .badge {
     font-size: 10px;
     font-weight: 700;
     padding: 3px 9px;
     border-radius: 20px;
-    background: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.18);
     letter-spacing: 0.5px;
     text-transform: uppercase;
-    margin-left: auto;
   }
-  .lane.auto .lane-header  { background: var(--itonic-blue-mid); }
-  .lane.human .lane-header { background: var(--itonic-green); }
 
-  .lane-body { padding: 16px 14px 18px; }
+  .swimlane.watcher .swimlane-header { background: linear-gradient(135deg, var(--blue-deep), var(--blue-mid)); }
+  .swimlane.reader  .swimlane-header { background: linear-gradient(135deg, var(--navy), var(--green)); }
 
-  /* ── Phase block (functional group) ── */
-  .phase {
-    border: 1.5px solid var(--itonic-blue-pale);
-    border-radius: 10px;
-    margin-bottom: 12px;
-    overflow: hidden;
-  }
-  .phase-title {
-    background: var(--itonic-blue-pale);
-    color: var(--itonic-blue-deep);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.7px;
-    padding: 7px 14px;
-  }
-  .phase-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+  .swimlane-body { padding: 16px 12px 18px; }
 
-  /* ── Step block ── */
   .step {
-    background: #f6fbfc;
-    border-left: 3px solid var(--itonic-blue-light);
-    border-radius: 0 8px 8px 0;
-    padding: 10px 12px;
+    padding: 10px 13px;
+    border-radius: 8px;
+    margin: 3px 0;
     display: flex;
     align-items: flex-start;
     gap: 10px;
   }
-  .step.green  { border-left-color: var(--itonic-green); }
-  .step.yellow { border-left-color: var(--itonic-yellow); }
-  .step.dark   { border-left-color: var(--itonic-blue-deep); }
+  .step-icon   { font-size: 18px; flex-shrink: 0; width: 24px; text-align: center; padding-top: 1px; }
+  .step-title  { font-size: 13px; font-weight: 700; margin-bottom: 2px; color: var(--gray-dark); }
+  .step-desc   { font-size: 11px; color: var(--gray-mid); line-height: 1.45; }
+  .step-note   { font-size: 10px; color: var(--gray-mid); font-style: italic; margin-top: 3px; }
 
-  .step-icon { font-size: 18px; flex-shrink: 0; width: 24px; text-align: center; padding-top: 1px; }
-  .step-title { font-size: 13px; font-weight: 700; color: var(--itonic-blue-deep); margin-bottom: 3px; }
-  .step-desc  { font-size: 11px; color: var(--itonic-gray-mid); line-height: 1.5; }
+  .step.trigger    { background: #e6f4fa; border-left: 3px solid var(--blue-mid); }
+  .step.ocr        { background: #e6f9f0; border-left: 3px solid var(--green); }
+  .step.preprocess { background: #f0e6fa; border-left: 3px solid #7D3C98; }
+  .step.regex      { background: #fde8e8; border-left: 3px solid var(--red); }
+  .step.ai         { background: #fef5e7; border-left: 3px solid var(--yellow); }
+  .step.validate   { background: #fde8e8; border-left: 3px solid var(--red); }
+  .step.storage    { background: #e6f9f0; border-left: 3px solid var(--green); }
+  .step.human      { background: #e6f4fa; border-left: 3px solid var(--blue-light); }
+  .step.export     { background: #f0f2f4; border-left: 3px solid var(--gray-dark); }
+  .step.erp        { background: #e6f4fa; border-left: 3px solid var(--blue-deep); }
 
-  /* ── Arrow between steps ── */
-  .arrow-down {
+  .step-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+  .tag {
+    font-size: 10px; font-weight: 700;
+    padding: 2px 7px; border-radius: 4px;
+    font-family: 'Courier New', monospace;
+  }
+
+  .step-group {
+    border: 1.5px dashed var(--gray-light);
+    border-radius: 8px;
+    padding: 10px;
+    margin: 5px 0;
+    background: #fafbfc;
+  }
+  .step-group-title {
+    font-size: 11px; font-weight: 700; color: var(--gray-mid);
+    text-transform: uppercase; letter-spacing: 0.7px;
+    margin-bottom: 8px; padding: 0 4px;
+  }
+
+  .arrow {
     height: 16px;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--itonic-blue-light);
+    color: var(--gray-light);
     font-size: 14px;
   }
 
-  /* ── Middle connector ── */
-  .connector {
+  .middle-connector {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 12px 0;
     height: 100%;
+    padding: 8px 0;
   }
-  .connector-line {
+  .connector-line-v {
     flex: 1;
     width: 2px;
-    background: linear-gradient(to bottom, transparent, var(--itonic-blue-light), transparent);
+    background: linear-gradient(to bottom, transparent 0%, var(--gray-light) 30%, var(--gray-light) 70%, transparent 100%);
   }
-  .connector-pill {
+  .connector-label {
     writing-mode: vertical-rl;
     text-orientation: mixed;
     transform: rotate(180deg);
-    background: var(--itonic-blue-deep);
+    background: var(--blue-deep);
     color: white;
-    border-radius: 20px;
-    padding: 14px 7px;
+    border-radius: 8px;
+    padding: 12px 7px;
     font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.8px;
+    letter-spacing: 0.7px;
     text-transform: uppercase;
+    box-shadow: 0 3px 10px rgba(5,95,125,0.2);
     white-space: nowrap;
   }
 
-  /* ── Bottom sections ── */
-  .bottom-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-
-  .section-card {
+  .shared-layer {
+    grid-column: 1 / -1;
     background: white;
     border-radius: 14px;
     overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    box-shadow: 0 3px 16px rgba(0,0,0,0.06);
+    margin-top: 18px;
   }
-  .section-card.full { grid-column: 1 / -1; }
-
-  .section-header {
-    background: var(--itonic-blue-deep);
+  .shared-header {
+    background: linear-gradient(135deg, var(--gray-dark), #6b7280);
     color: white;
-    padding: 12px 20px;
-    font-size: 12px;
+    padding: 14px 22px;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.7px;
+    font-size: 13px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
   }
-  .section-header.mid { background: var(--itonic-blue-mid); }
-
-  .section-body { padding: 16px 20px; }
-
-  /* ── Benefits grid ── */
-  .benefits-grid {
+  .shared-header span { font-size: 11px; opacity: 0.65; margin-left: auto; }
+  .shared-items {
+    padding: 16px 20px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
   }
-  .benefit-item {
-    background: #f6fbfc;
-    border: 1px solid var(--itonic-blue-pale);
-    border-radius: 10px;
-    padding: 14px 12px;
+  .shared-item {
+    background: #f8f9fa;
+    border: 1px solid var(--gray-xlight);
+    border-radius: 8px;
+    padding: 14px;
     text-align: center;
   }
-  .benefit-icon { font-size: 24px; margin-bottom: 8px; }
-  .benefit-label { font-size: 12px; font-weight: 700; color: var(--itonic-blue-deep); margin-bottom: 4px; }
-  .benefit-desc  { font-size: 11px; color: var(--itonic-gray-mid); line-height: 1.45; }
+  .shared-item .si-icon { font-size: 20px; margin-bottom: 4px; }
+  .shared-item .si-name { font-size: 12px; font-weight: 700; color: var(--blue-deep); font-family: 'Courier New', monospace; }
+  .shared-item .si-file { font-size: 10px; color: var(--gray-mid); margin-top: 2px; }
+  .shared-item .si-desc { font-size: 11px; color: var(--gray-dark); margin-top: 4px; }
 
-  /* ── Status flow ── */
+  .tech-row {
+    grid-column: 1 / -1;
+    background: white;
+    border-radius: 14px;
+    padding: 16px 22px;
+    box-shadow: 0 3px 16px rgba(0,0,0,0.06);
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    align-items: center;
+  }
+  .tech-row-title {
+    font-size: 11px; font-weight: 700; color: var(--gray-mid);
+    text-transform: uppercase; letter-spacing: 0.7px;
+  }
+  .tech-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tech-chip {
+    background: #f0f2f5;
+    border: 1px solid var(--gray-xlight);
+    border-radius: 20px;
+    padding: 5px 13px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--blue-deep);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .status-row {
+    grid-column: 1 / -1;
+    background: white;
+    border-radius: 14px;
+    padding: 18px 22px;
+    box-shadow: 0 3px 16px rgba(0,0,0,0.06);
+    margin-top: 14px;
+  }
+  .status-title {
+    font-size: 11px; font-weight: 700; color: var(--gray-mid);
+    text-transform: uppercase; letter-spacing: 0.7px;
+    margin-bottom: 14px;
+  }
   .status-flow {
     display: flex;
     align-items: center;
-    gap: 8px;
     flex-wrap: wrap;
+    gap: 4px;
   }
-  .status-pill {
+  .status-node {
     border-radius: 24px;
-    padding: 9px 18px;
+    padding: 8px 18px;
     font-size: 12px;
     font-weight: 700;
     color: white;
     display: flex;
     align-items: center;
-    gap: 7px;
-    flex-direction: column;
-    text-align: center;
-    min-width: 130px;
+    gap: 6px;
   }
-  .status-pill .by {
-    font-size: 9px;
-    font-weight: 400;
-    opacity: 0.75;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+  .status-node .who {
+    font-size: 9px; font-weight: 700; opacity: 0.75;
+    text-transform: uppercase; letter-spacing: 0.4px;
   }
-  .status-arrow { font-size: 22px; color: var(--itonic-blue-light); }
+  .status-arrow-h { font-size: 20px; color: var(--gray-light); padding: 0 4px; }
+  .status-note { font-size: 11px; color: var(--gray-mid); margin-left: 10px; }
 
-  /* ── Integration row ── */
-  .integration-row {
-    display: flex;
+  .insight-row {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 14px;
-    flex-wrap: wrap;
+    margin-top: 14px;
   }
-  .integration-item {
-    flex: 1;
-    min-width: 160px;
-    background: #f6fbfc;
-    border: 1px solid var(--itonic-blue-pale);
-    border-radius: 10px;
-    padding: 12px 14px;
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
+  .insight-card {
+    background: white;
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 3px 16px rgba(0,0,0,0.06);
   }
-  .integration-icon { font-size: 22px; flex-shrink: 0; }
-  .integration-label { font-size: 12px; font-weight: 700; color: var(--itonic-blue-deep); margin-bottom: 3px; }
-  .integration-desc  { font-size: 11px; color: var(--itonic-gray-mid); line-height: 1.45; }
+  .insight-header {
+    font-size: 12px; font-weight: 700; color: var(--blue-deep);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+  }
+  .insight-steps { display: flex; flex-direction: column; gap: 6px; }
+  .insight-step {
+    display: flex; align-items: flex-start; gap: 8px;
+    font-size: 11px; line-height: 1.4;
+  }
+  .insight-step .num {
+    background: var(--blue-mid);
+    color: white;
+    border-radius: 50%;
+    width: 18px; height: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; flex-shrink: 0;
+  }
+  .insight-step.orange .num { background: var(--yellow); }
+  .insight-step.purple .num { background: #7D3C98; }
+  .insight-step.red    .num { background: var(--red); }
+  .insight-step.green  .num { background: var(--green); }
+
+  .legend {
+    grid-column: 1 / -1;
+    background: white;
+    border-radius: 14px;
+    padding: 16px 22px;
+    box-shadow: 0 3px 16px rgba(0,0,0,0.06);
+    margin-top: 14px;
+  }
+  .legend-title {
+    font-size: 11px; font-weight: 700; color: var(--gray-mid);
+    text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 12px;
+  }
+  .legend-items { display: flex; flex-wrap: wrap; gap: 10px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--gray-dark); }
+  .legend-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
 
   footer {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 24px;
     font-size: 11px;
-    color: var(--itonic-gray-mid);
+    color: var(--gray-mid);
+  }
+
+  @media print {
+    body { background: white; padding: 12px; min-width: unset; }
+    .page-header { box-shadow: none; }
+    .swimlane, .shared-layer, .tech-row, .status-row, .insight-card, .legend
+      { box-shadow: 0 0 0 1px var(--gray-xlight); }
   }
 </style>
 </head>
 <body>
 
-<!-- ── Header ── -->
+<!-- Header -->
 <div class="page-header">
-  <div class="header-left">
-    <h1>Invoice Reader — Lösungsübersicht</h1>
-    <p>KI-gestützte Rechnungsverarbeitung mit menschlicher Qualitätsprüfung und ERP-Integration</p>
+  <div>
+    <h1>Invoice Reader – Systemarchitektur</h1>
+    <p>KI-gestutzte automatische Rechnungsverarbeitung mit menschlicher Qualitatsprufung &amp; ERP-Integration</p>
   </div>
-  <div class="header-logo">
-    <!-- itonic Signet -->
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190.17 141.78" style="width:54px;height:auto;opacity:0.92">
-      <defs><style>.s1{fill:none}.s2{fill:#fff}.s3{fill:rgba(255,255,255,0.75)}.s4{fill:rgba(255,255,255,0.45)}.s5{fill:rgba(255,255,255,0.6)}.s6{fill:rgba(255,255,255,0.85)}</style></defs>
-      <g><g><rect class="s1" width="190.17" height="141.78"/>
-      <circle class="s2" cx="97.24" cy="61.16" r="4.15"/><circle class="s2" cx="95.09" cy="70.88" r="4.15"/><circle class="s2" cx="92.93" cy="80.6" r="4.15"/>
-      <circle class="s3" cx="99.4" cy="51.44" r="2.49"/><circle class="s3" cx="89.68" cy="51.44" r="2.49"/><circle class="s3" cx="109.11" cy="51.44" r="2.49"/><circle class="s3" cx="87.52" cy="61.16" r="2.49"/><circle class="s3" cx="85.37" cy="70.88" r="2.49"/><circle class="s3" cx="83.22" cy="80.6" r="2.49"/><circle class="s3" cx="81.06" cy="90.31" r="2.49"/><circle class="s3" cx="90.78" cy="90.31" r="2.49"/><circle class="s3" cx="100.5" cy="90.31" r="2.49"/><circle class="s3" cx="102.65" cy="80.6" r="2.49"/><circle class="s3" cx="104.8" cy="70.88" r="2.49"/><circle class="s3" cx="106.96" cy="61.16" r="2.49"/>
-      <circle class="s4" cx="64.84" cy="32.01" r=".83"/><circle class="s4" cx="74.55" cy="32.01" r=".83"/><circle class="s4" cx="84.27" cy="32.01" r=".83"/><circle class="s4" cx="93.99" cy="32.01" r=".83"/><circle class="s4" cx="103.7" cy="32.01" r=".83"/><circle class="s4" cx="113.42" cy="32.01" r=".83"/><circle class="s4" cx="123.14" cy="32.01" r=".83"/><circle class="s4" cx="132.85" cy="32.01" r=".83"/><circle class="s4" cx="142.57" cy="32.01" r=".83"/><circle class="s4" cx="140.42" cy="41.73" r=".83"/><circle class="s4" cx="138.26" cy="51.44" r=".83"/><circle class="s4" cx="136.11" cy="61.16" r=".83"/><circle class="s4" cx="133.95" cy="70.88" r=".83"/><circle class="s4" cx="131.8" cy="80.6" r=".83"/><circle class="s4" cx="129.65" cy="90.31" r=".83"/><circle class="s4" cx="127.49" cy="100.03" r=".83"/><circle class="s4" cx="125.34" cy="109.75" r=".83"/><circle class="s4" cx="115.62" cy="109.75" r=".83"/><circle class="s4" cx="105.9" cy="109.77" r=".83"/><circle class="s4" cx="96.19" cy="109.75" r=".83"/><circle class="s4" cx="86.47" cy="109.77" r=".83"/><circle class="s4" cx="76.75" cy="109.77" r=".83"/><circle class="s4" cx="67.04" cy="109.77" r=".83"/><circle class="s4" cx="57.32" cy="109.77" r=".83"/><circle class="s4" cx="47.6" cy="109.77" r=".83"/><circle class="s4" cx="49.76" cy="100.03" r=".83"/><circle class="s4" cx="59.47" cy="100.03" r=".83"/><circle class="s4" cx="69.19" cy="100.03" r=".83"/><circle class="s4" cx="61.63" cy="90.31" r=".83"/><circle class="s4" cx="51.91" cy="90.33" r=".83"/><circle class="s4" cx="54.06" cy="80.6" r=".83"/><circle class="s4" cx="56.22" cy="70.88" r=".83"/><circle class="s4" cx="58.37" cy="61.16" r=".83"/><circle class="s4" cx="60.53" cy="51.44" r=".83"/><circle class="s4" cx="70.24" cy="51.44" r=".83"/><circle class="s4" cx="72.4" cy="41.73" r=".83"/><circle class="s4" cx="82.12" cy="41.73" r=".83"/><circle class="s4" cx="62.68" cy="41.73" r=".83"/><circle class="s4" cx="117.77" cy="100.03" r=".83"/><circle class="s4" cx="108.06" cy="100.03" r=".83"/><circle class="s4" cx="119.93" cy="90.31" r=".83"/><circle class="s4" cx="128.55" cy="51.44" r=".83"/><circle class="s4" cx="130.7" cy="41.73" r=".83"/><circle class="s4" cx="120.98" cy="41.73" r=".83"/>
-      <circle class="s5" cx="77.81" cy="61.16" r="1.66"/><circle class="s5" cx="75.65" cy="70.88" r="1.66"/><circle class="s5" cx="73.5" cy="80.6" r="1.66"/><circle class="s5" cx="112.37" cy="80.6" r="1.66"/><circle class="s5" cx="114.52" cy="70.88" r="1.66"/><circle class="s5" cx="116.67" cy="61.16" r="1.66"/>
-      <circle class="s6" cx="101.55" cy="41.73" r="1.66"/><circle class="s6" cx="91.83" cy="41.73" r="1.66"/><circle class="s6" cx="111.27" cy="41.73" r="1.66"/><circle class="s6" cx="79.96" cy="51.44" r="1.66"/><circle class="s6" cx="71.34" cy="90.31" r="1.66"/><circle class="s6" cx="110.21" cy="90.31" r="1.66"/><circle class="s6" cx="78.91" cy="100.03" r="1.66"/><circle class="s6" cx="88.62" cy="100.03" r="1.66"/><circle class="s6" cx="98.34" cy="100.03" r="1.66"/><circle class="s6" cx="126.39" cy="61.16" r="1.24"/><circle class="s6" cx="68.09" cy="61.16" r="1.24"/><circle class="s6" cx="65.94" cy="70.88" r="1.24"/><circle class="s6" cx="63.78" cy="80.6" r="1.24"/><circle class="s6" cx="124.24" cy="70.9" r="1.24"/><circle class="s6" cx="122.08" cy="80.6" r="1.24"/><circle class="s6" cx="118.83" cy="51.44" r="1.66"/>
-      </g></g>
-    </svg>
-    <div class="header-badges">
-      <div class="header-badge"><strong>100%</strong>lokal · keine Cloud</div>
-      <div class="header-badge"><strong>3</strong>Eingangsformate<br>PDF · JPG · PNG</div>
-      <div class="header-badge"><strong>4</strong>Prozessschritte<br>bis ERP-Import</div>
-    </div>
+  <div class="header-badges">
+    <div class="header-badge"><strong>100%</strong>lokal - keine Cloud</div>
+    <div class="header-badge"><strong>7</strong>Dateiformate<br>PDF - JPG - PNG - GIF<br>WebP - BMP - TIFF</div>
+    <div class="header-badge"><strong>4</strong>Statusschritte<br>bis ERP-Import</div>
   </div>
 </div>
 
-<!-- ── Two-lane flow ── -->
-<div class="main-flow">
+<!-- Main diagram -->
+<div class="diagram-grid">
 
-  <!-- Left: Automatische Verarbeitung -->
-  <div class="lane auto">
-    <div class="lane-header">
-      🤖 Automatische Verarbeitung
+  <!-- Left: Watcher -->
+  <div class="swimlane watcher">
+    <div class="swimlane-header">
+      WATCHER
       <span class="badge">Vollautomatisch</span>
     </div>
-    <div class="lane-body">
+    <div class="swimlane-body">
 
-      <div class="phase">
-        <div class="phase-title">📥 Eingang & Erkennung</div>
-        <div class="phase-body">
-          <div class="step">
-            <div class="step-icon">🗂️</div>
-            <div>
-              <div class="step-title">Ordner-Überwachung</div>
-              <div class="step-desc">Definierte Ablageverzeichnisse werden automatisch auf neue Rechnungen geprüft — ohne manuellen Eingriff.</div>
-            </div>
+      <div class="step trigger">
+        <div class="step-icon">&#128450;</div>
+        <div>
+          <div class="step-title">Verzeichnis-Uberwachung</div>
+          <div class="step-desc">Konfigurierte Ordner werden alle 30 Min. auf neue Dateien gepruft. Config-Hot-Reload ohne Neustart. Modi: Dauerbetrieb oder <code style="font-size:10px">--once</code>.</div>
+        </div>
+      </div>
+      <div class="arrow">&#8595;</div>
+
+      <div class="step trigger">
+        <div class="step-icon">&#128196;</div>
+        <div>
+          <div class="step-title">Neue Datei erkannt</div>
+          <div class="step-desc">PDF, JPG, PNG, GIF, WebP, BMP, TIFF. Bereits analysierte Dateien (JSON vorhanden) werden ubersprungen.</div>
+        </div>
+      </div>
+      <div class="arrow">&#8595;</div>
+
+      <div class="step-group">
+        <div class="step-group-title">Schritt 1 - Textextraktion</div>
+
+        <div class="step ocr">
+          <div class="step-icon">&#128203;</div>
+          <div>
+            <div class="step-title">Digitale PDFs: pdfplumber</div>
+            <div class="step-desc">Direktextraktion von Text, Tabellen und Schriftmetadaten. Font-aware Annotation (fett/gross = hervorgehoben).</div>
           </div>
-          <div class="step">
-            <div class="step-icon">📄</div>
-            <div>
-              <div class="step-title">Neue Rechnung erkannt</div>
-              <div class="step-desc">PDF, JPG und PNG werden unterstützt. Bereits verarbeitete Dokumente werden automatisch übersprungen.</div>
-            </div>
+        </div>
+
+        <div class="step ocr" style="margin-top:4px">
+          <div class="step-icon">&#128424;</div>
+          <div>
+            <div class="step-title">Gescannte PDFs: PyMuPDF + Tesseract</div>
+            <div class="step-desc">Seiten als Bild gerendert (2.5x Auflosung), dann OCR. Automatischer Fallback bei leerer Textextraktion.</div>
+          </div>
+        </div>
+
+        <div class="step ocr" style="margin-top:4px">
+          <div class="step-icon">&#128444;</div>
+          <div>
+            <div class="step-title">Bilder: Tesseract OCR</div>
+            <div class="step-desc">Direkte Bilderkennung mit Deutsch + Englisch Sprachpaket. Unterstutzt JPG, PNG, GIF, WebP, BMP, TIFF.</div>
           </div>
         </div>
       </div>
+      <div class="arrow">&#8595;</div>
 
-      <div class="arrow-down">↓</div>
-
-      <div class="phase">
-        <div class="phase-title">🔍 Textextraktion & Lesbarkeit</div>
-        <div class="phase-body">
-          <div class="step">
-            <div class="step-icon">📋</div>
-            <div>
-              <div class="step-title">Digitale Rechnungen</div>
-              <div class="step-desc">Direkte Textextraktion aus digital erstellten PDFs — schnell und verlustfrei.</div>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-icon">🖨️</div>
-            <div>
-              <div class="step-title">Gescannte Dokumente & Bilder</div>
-              <div class="step-desc">Automatische Texterkennung (OCR) mit Bildoptimierung für schlechte Scans. Unterstützt Deutsch und Englisch.</div>
-            </div>
-          </div>
+      <div class="step preprocess">
+        <div class="step-icon">&#127912;</div>
+        <div>
+          <div class="step-title">Bildvorverarbeitung (Pillow)</div>
+          <div class="step-desc">Vor OCR: 2x Upscaling, Graustufen, Kontrast x2, Scharfefilter, Medianfilter (Rauschreduzierung).</div>
         </div>
       </div>
+      <div class="arrow">&#8595;</div>
 
-      <div class="arrow-down">↓</div>
-
-      <div class="phase">
-        <div class="phase-title">🧠 KI-Analyse</div>
-        <div class="phase-body">
-          <div class="step yellow">
-            <div class="step-icon">🧠</div>
-            <div>
-              <div class="step-title">Lokales KI-Modell extrahiert alle Felder</div>
-              <div class="step-desc">Rechnungsnummer, Datum, Lieferant, Netto, MwSt, Brutto, IBAN und weitere Felder werden vollständig erkannt. Das Modell läuft lokal — keine Daten verlassen das Unternehmen.</div>
-            </div>
+      <div class="step regex">
+        <div class="step-icon">&#127991;</div>
+        <div>
+          <div class="step-title">Schritt 2 - Regex-Annotierung</div>
+          <div class="step-desc">Regulare Ausdrucke markieren automatisch Geldbetrager und Summenzeilen fur die KI:</div>
+          <div class="step-tags">
+            <span class="tag" style="background:#fde8e8;color:#C0392B">[BETRAG]</span>
+            <span class="tag" style="background:#e6f9f0;color:#27864A">[BRUTTO]</span>
+            <span class="tag" style="background:#e6f4fa;color:#055F7D">[HERVORGEHOBEN]</span>
           </div>
-          <div class="step yellow">
-            <div class="step-icon">✔️</div>
-            <div>
-              <div class="step-title">Automatische Plausibilitätsprüfung</div>
-              <div class="step-desc">Betragsrechnung (Netto + MwSt = Brutto) wird automatisch validiert. Bei Unstimmigkeit startet ein zweiter KI-Prüflauf — selbstkorrigierend.</div>
-            </div>
-          </div>
+          <div class="step-note">Erste/letzte Seite erhalten [BETRAG]-Markierung (Heuristik fur Summen)</div>
         </div>
       </div>
+      <div class="arrow">&#8595;</div>
 
-      <div class="arrow-down">↓</div>
+      <div class="step ai">
+        <div class="step-icon">&#129504;</div>
+        <div>
+          <div class="step-title">Schritt 3 - KI-Analyse (Ollama / Gemma3 27B)</div>
+          <div class="step-desc">Lokales LLM analysiert annotierten Text. Befllt strukturiertes JSON-Template mit 18+ Rechnungsfeldern.</div>
+          <div class="step-note">Temp.: 0.05 | Context: 16.384 Tokens | Max Output: 2.048 | kein Internet</div>
+        </div>
+      </div>
+      <div class="arrow">&#8595;</div>
 
-      <div class="phase">
-        <div class="phase-title">💾 Ergebnis gespeichert</div>
-        <div class="phase-body">
-          <div class="step green">
-            <div class="step-icon">💾</div>
-            <div>
-              <div class="step-title">Strukturierte Daten bereitgestellt</div>
-              <div class="step-desc">Alle extrahierten Felder werden als strukturierter Datensatz neben dem Original gespeichert und stehen dem Invoice Reader sofort zur Verfügung.</div>
-            </div>
-          </div>
+      <div class="step validate">
+        <div class="step-icon">&#128290;</div>
+        <div>
+          <div class="step-title">Schritt 4 - Betragsprufung + Auto-Korrektur</div>
+          <div class="step-desc">Validiert: Netto + MwSt = Brutto (Toleranz +/-0.02). AT-Satze: 0/10/13/19/20%. Mischsatz-Erkennung. Bei Unstimmigkeit: zweiter fokussierter KI-Call.</div>
+        </div>
+      </div>
+      <div class="arrow">&#8595;</div>
+
+      <div class="step storage">
+        <div class="step-icon">&#128190;</div>
+        <div>
+          <div class="step-title">JSON-Sidecar gespeichert</div>
+          <div class="step-desc">Strukturierte Daten als <code style="font-size:10px;background:#d5f5e3;padding:1px 4px;border-radius:3px">rechnung.pdf.json</code> neben dem Original. Status: <strong>"analysiert"</strong></div>
         </div>
       </div>
 
@@ -424,95 +475,90 @@
   </div>
 
   <!-- Middle connector -->
-  <div class="connector">
-    <div class="connector-line"></div>
-    <div class="connector-pill">Gemeinsame Datenbasis</div>
-    <div class="connector-line"></div>
+  <div class="middle-connector">
+    <div class="connector-line-v"></div>
+    <div class="connector-label">JSON Sidecar - Gemeinsame Datenbasis</div>
+    <div class="connector-line-v"></div>
   </div>
 
-  <!-- Right: Menschliche Prüfung -->
-  <div class="lane human">
-    <div class="lane-header">
-      👤 Manuelle Prüfung & Freigabe
+  <!-- Right: Invoice Reader -->
+  <div class="swimlane reader">
+    <div class="swimlane-header">
+      INVOICE READER
       <span class="badge">Human in the Loop</span>
     </div>
-    <div class="lane-body">
+    <div class="swimlane-body">
 
-      <div class="phase">
-        <div class="phase-title">🌐 Web-Oberfläche</div>
-        <div class="phase-body">
-          <div class="step">
-            <div class="step-icon">🌐</div>
-            <div>
-              <div class="step-title">Browser-basiertes Interface</div>
-              <div class="step-desc">Sachbearbeiter öffnen die Anwendung direkt im Browser — keine Installation erforderlich. Zugriff über das interne Netzwerk.</div>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-icon">📂</div>
-            <div>
-              <div class="step-title">Rechnungen laden</div>
-              <div class="step-desc">Ordner auswählen oder einzelne Dateien hochladen. Alle Rechnungen erscheinen übersichtlich als Liste.</div>
-            </div>
-          </div>
+      <div class="step human">
+        <div class="step-icon">&#127760;</div>
+        <div>
+          <div class="step-title">Web-Interface (FastAPI)</div>
+          <div class="step-desc">Browserbasierte Oberflache via <code style="font-size:10px">localhost:8000</code>. Kein Software-Install beim Sachbearbeiter notig.</div>
         </div>
       </div>
+      <div class="arrow">&#8595;</div>
 
-      <div class="arrow-down">↓</div>
-
-      <div class="phase">
-        <div class="phase-title">👁️ Prüfen & Korrigieren</div>
-        <div class="phase-body">
-          <div class="step">
-            <div class="step-icon">👁️</div>
-            <div>
-              <div class="step-title">Seite-an-Seite Ansicht</div>
-              <div class="step-desc">Original-Rechnung und extrahierte Daten werden nebeneinander angezeigt — sofortiger Abgleich auf einen Blick.</div>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-icon">✏️</div>
-            <div>
-              <div class="step-title">Felder bearbeiten</div>
-              <div class="step-desc">Alle Felder sind direkt editierbar. Korrekturen werden sofort gespeichert.</div>
-            </div>
-          </div>
+      <div class="step human">
+        <div class="step-icon">&#128194;</div>
+        <div>
+          <div class="step-title">Ordner auswahlen oder Datei hochladen</div>
+          <div class="step-desc">Nativer Windows-Ordnerdialog oder direkter Datei-Upload. Alle Rechnungen als Liste mit Status-Anzeige.</div>
         </div>
       </div>
+      <div class="arrow">&#8595;</div>
 
-      <div class="arrow-down">↓</div>
-
-      <div class="phase">
-        <div class="phase-title">✅ Freigabe</div>
-        <div class="phase-body">
-          <div class="step green">
-            <div class="step-icon">✅</div>
-            <div>
-              <div class="step-title">Rechnung freigeben</div>
-              <div class="step-desc">Ein Klick bestätigt die Prüfung. Nur freigegebene Rechnungen können exportiert oder ins ERP übertragen werden.</div>
-            </div>
-          </div>
+      <div class="step ocr">
+        <div class="step-icon">&#128270;</div>
+        <div>
+          <div class="step-title">Analyse on Demand</div>
+          <div class="step-desc">Falls noch nicht analysiert: gleiche Pipeline wird im Browser gestartet. Modell wahlbar (Dropdown). Vorhandene JSONs werden direkt geladen.</div>
         </div>
       </div>
+      <div class="arrow">&#8595;</div>
 
-      <div class="arrow-down">↓</div>
+      <div class="step human">
+        <div class="step-icon">&#128065;</div>
+        <div>
+          <div class="step-title">Seite-an-Seite Vorschau</div>
+          <div class="step-desc">Original-PDF links, extrahierte Daten rechts. Drag-Divider fur flexible Aufteilung. Sachbearbeiter sieht sofort, ob die KI richtig gelesen hat.</div>
+        </div>
+      </div>
+      <div class="arrow">&#8595;</div>
 
-      <div class="phase">
-        <div class="phase-title">📤 Export & ERP-Übergabe</div>
-        <div class="phase-body">
-          <div class="step dark">
-            <div class="step-icon">📊</div>
-            <div>
-              <div class="step-title">Excel-Export</div>
-              <div class="step-desc">Alle freigegebenen Rechnungen als strukturierte Excel-Datei für weitere Verwendung.</div>
-            </div>
+      <div class="step human">
+        <div class="step-icon">&#9999;</div>
+        <div>
+          <div class="step-title">Daten prufen &amp; korrigieren</div>
+          <div class="step-desc">18+ editierbare Felder: Nummer, Datum, Betrage, Lieferant, IBAN, Einzieher, Bestellnr. usw. Anderungen sofort im JSON gespeichert. Status: <strong>"bearbeitet"</strong></div>
+        </div>
+      </div>
+      <div class="arrow">&#8595;</div>
+
+      <div class="step validate">
+        <div class="step-icon">&#9989;</div>
+        <div>
+          <div class="step-title">Freigabe durch Sachbearbeiter</div>
+          <div class="step-desc">Klick "Gepruft" bestatigt die Rechnung. Nur freigegebene Rechnungen konnen exportiert werden. Status: <strong>"gepruft"</strong></div>
+        </div>
+      </div>
+      <div class="arrow">&#8595;</div>
+
+      <div class="step-group">
+        <div class="step-group-title">Export &amp; ERP-Integration</div>
+
+        <div class="step export">
+          <div class="step-icon">&#128202;</div>
+          <div>
+            <div class="step-title">Excel-Export (openpyxl)</div>
+            <div class="step-desc">Batch-Export: alle gepruften oder alle Rechnungen als formatierte XLSX mit Kopfzeile, Farben und Auto-Filter.</div>
           </div>
-          <div class="step dark">
-            <div class="step-icon">🔗</div>
-            <div>
-              <div class="step-title">Direktübertragung in Vertec</div>
-              <div class="step-desc">Projekt und Phase wählen, Rechnung mit Originaldokument direkt ins ERP-System übertragen.</div>
-            </div>
+        </div>
+
+        <div class="step erp" style="margin-top:4px">
+          <div class="step-icon">&#128279;</div>
+          <div>
+            <div class="step-title">Vertec ERP-Import (REST API)</div>
+            <div class="step-desc">Einzeln oder Batch: OpenExpense via POST erstellen, Dokument via PUT anhangen. Projekt + Phase wahlbar. Mischsatz-Felder (xFeeIntFC/xFeeIntFcGross) bei gemischten MwSt-Satzen. Status: <strong>"vertec-importiert"</strong></div>
           </div>
         </div>
       </div>
@@ -520,69 +566,158 @@
     </div>
   </div>
 
-</div>
+  <!-- Shared logic -->
+  <div class="shared-layer">
+    <div class="shared-header">
+      GEMEINSAME KERNLOGIK — watcher.py
+      <span>Beide Systeme nutzen dieselbe Verarbeitungs-Engine - kein Code-Duplikat</span>
+    </div>
+    <div class="shared-items">
+      <div class="shared-item">
+        <div class="si-icon">&#128270;</div>
+        <div class="si-name">extract_text()</div>
+        <div class="si-file">watcher.py</div>
+        <div class="si-desc">PDF-Extraktion, OCR-Fallback, Bildvorverarbeitung, Font-Annotation, Regex-Tags</div>
+      </div>
+      <div class="shared-item">
+        <div class="si-icon">&#128221;</div>
+        <div class="si-name">build_prompt()</div>
+        <div class="si-file">watcher.py</div>
+        <div class="si-desc">Text kurzen (65% Kopf / 35% Ende, max 10.000 Zeichen), JSON-Template, Prompt</div>
+      </div>
+      <div class="shared-item">
+        <div class="si-icon">&#129504;</div>
+        <div class="si-name">analyze_with_ollama()</div>
+        <div class="si-file">watcher.py</div>
+        <div class="si-desc">HTTP-Call an lokales LLM, JSON-Parsing, Token-Logging in SQLite</div>
+      </div>
+      <div class="shared-item">
+        <div class="si-icon">&#128290;</div>
+        <div class="si-name">check_and_fix_amounts()</div>
+        <div class="si-file">amount_check.py</div>
+        <div class="si-desc">MwSt-Mathematik, AT-Satze, Mischsatz-Erkennung, Retry via 2. LLM-Call</div>
+      </div>
+    </div>
+  </div>
 
-<!-- ── Status-Lebenszyklus ── -->
-<div class="section-card full" style="margin-bottom:16px;">
-  <div class="section-header">📌 Lebenszyklus einer Rechnung im System</div>
-  <div class="section-body">
+  <!-- Status flow -->
+  <div class="status-row">
+    <div class="status-title">Lebenszyklus einer Rechnung im System</div>
     <div class="status-flow">
-      <div class="status-pill" style="background:var(--itonic-blue-mid)">
-        📥 Analysiert
-        <span class="by">Automatisch</span>
+      <div class="status-node" style="background:var(--blue-mid)">
+        analysiert
+        <span class="who">Watcher</span>
       </div>
-      <span class="status-arrow">→</span>
-      <div class="status-pill" style="background:var(--itonic-blue-light)">
-        ✏️ Bearbeitet
-        <span class="by">Sachbearbeiter</span>
+      <span class="status-arrow-h">&#8594;</span>
+      <div class="status-node" style="background:#7D3C98">
+        bearbeitet
+        <span class="who">Invoice Reader</span>
       </div>
-      <span class="status-arrow">→</span>
-      <div class="status-pill" style="background:var(--itonic-green)">
-        ✅ Geprüft &amp; Freigegeben
-        <span class="by">Sachbearbeiter</span>
+      <span class="status-arrow-h">&#8594;</span>
+      <div class="status-node" style="background:var(--green)">
+        gepruft
+        <span class="who">Sachbearbeiter</span>
       </div>
-      <span class="status-arrow">→</span>
-      <div class="status-pill" style="background:var(--itonic-blue-deep)">
-        🔗 In Vertec importiert
-        <span class="by">ERP-System</span>
+      <span class="status-arrow-h">&#8594;</span>
+      <div class="status-node" style="background:var(--blue-deep)">
+        vertec-importiert
+        <span class="who">ERP</span>
       </div>
-      <span style="font-size:11px;color:var(--itonic-gray-mid);margin-left:10px;max-width:200px;line-height:1.4;">Nur freigegebene Rechnungen können exportiert oder ins ERP übertragen werden.</span>
+      <span class="status-note">Nur "geprufter" Rechnungen konnen exportiert oder in Vertec ubertragen werden</span>
     </div>
   </div>
-</div>
 
-<!-- ── Nutzen & Sicherheit ── -->
-<div class="bottom-row">
-  <div class="section-card full">
-    <div class="section-header mid">🎯 Kernnutzen auf einen Blick</div>
-    <div class="section-body">
-      <div class="benefits-grid">
-        <div class="benefit-item">
-          <div class="benefit-icon">⚡</div>
-          <div class="benefit-label">Zeitersparnis</div>
-          <div class="benefit-desc">Manuelle Dateneingabe entfällt. KI übernimmt die Erstextraktion aller Felder automatisch.</div>
+  <!-- Process insights -->
+  <div class="insight-row">
+    <div class="insight-card">
+      <div class="insight-header">OCR &amp; Regex-Pipeline im Detail</div>
+      <div class="insight-steps">
+        <div class="insight-step">
+          <span class="num">1</span>
+          <span><strong>Bildvorverarbeitung:</strong> 2x Upscaling, Graustufen, Kontrast x2, Scharfe- und Medianfilter vor Tesseract OCR.</span>
         </div>
-        <div class="benefit-item">
-          <div class="benefit-icon">🔒</div>
-          <div class="benefit-label">Datensicherheit</div>
-          <div class="benefit-desc">100% lokal — keine Daten verlassen das Unternehmen. Keine Cloud-Dienste, keine externe Übertragung.</div>
+        <div class="insight-step orange">
+          <span class="num">2</span>
+          <span><strong>Tesseract OCR (deu+eng):</strong> Erkennt Rechnungen zuverlassig in Deutsch und Englisch. 7 Bildformate.</span>
         </div>
-        <div class="benefit-item">
-          <div class="benefit-icon">✅</div>
-          <div class="benefit-label">Qualitätssicherung</div>
-          <div class="benefit-desc">Automatische Plausibilitätsprüfung und menschliche Freigabe vor jeder Weiterverarbeitung.</div>
+        <div class="insight-step purple">
+          <span class="num">3</span>
+          <span><strong>Font-Annotation:</strong> pdfplumber erkennt fette/grosse Schrift und markiert sie als [HERVORGEHOBEN].</span>
         </div>
-        <div class="benefit-item">
-          <div class="benefit-icon">🔗</div>
-          <div class="benefit-label">ERP-Integration</div>
-          <div class="benefit-desc">Direkter Datentransfer in Vertec — inklusive Originaldokument, Projekt- und Phasenzuordnung.</div>
+        <div class="insight-step red">
+          <span class="num">4</span>
+          <span><strong>Regex-Tags:</strong> [BETRAG] fur Geldbetrager, [BRUTTO] fur Schlusselworter wie "Gesamt", "Summe", "Total".</span>
+        </div>
+        <div class="insight-step green">
+          <span class="num">5</span>
+          <span><strong>Prompt-Konstruktion:</strong> Text auf 10.000 Zeichen gekurzt (65% Kopf + 35% Ende), JSON-Template eingefugt.</span>
         </div>
       </div>
     </div>
+
+    <div class="insight-card">
+      <div class="insight-header">KI-Analyse &amp; Qualitatssicherung</div>
+      <div class="insight-steps">
+        <div class="insight-step">
+          <span class="num">1</span>
+          <span><strong>Lokales LLM (Gemma3 27B):</strong> Lauft vollstandig auf eigenem Server. Keine Daten verlassen das Unternehmen.</span>
+        </div>
+        <div class="insight-step orange">
+          <span class="num">2</span>
+          <span><strong>18+ Felder:</strong> Nummer, Datum, Lieferant, IBAN, Netto, MwSt, Brutto, Einzieher, Bestellnr., Positionen ...</span>
+        </div>
+        <div class="insight-step purple">
+          <span class="num">3</span>
+          <span><strong>Betragsprufung:</strong> Netto + MwSt = Brutto? AT-Steuersatze (0/10/13/19/20%) und Mischsatz-Erkennung.</span>
+        </div>
+        <div class="insight-step red">
+          <span class="num">4</span>
+          <span><strong>Auto-Retry:</strong> Bei Unstimmigkeit: zweiter fokussierter KI-Call (Temp. 0.0, 12k Zeichen) nur fur Betrager.</span>
+        </div>
+        <div class="insight-step green">
+          <span class="num">5</span>
+          <span><strong>Token-Logging:</strong> Jeder KI-Call in SQLite protokolliert: Modell, Session, Input/Output-Tokens.</span>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!-- Tech stack -->
+  <div class="tech-row">
+    <div class="tech-row-title">Tech Stack</div>
+    <div class="tech-chips">
+      <span class="tech-chip">Python 3.10+</span>
+      <span class="tech-chip">FastAPI + Uvicorn</span>
+      <span class="tech-chip">pdfplumber</span>
+      <span class="tech-chip">PyMuPDF (fitz)</span>
+      <span class="tech-chip">Tesseract OCR</span>
+      <span class="tech-chip">Pillow</span>
+      <span class="tech-chip">Ollama (Gemma3 27B)</span>
+      <span class="tech-chip">openpyxl (Excel)</span>
+      <span class="tech-chip">SQLite (Token-Log)</span>
+      <span class="tech-chip">Vertec REST API</span>
+      <span class="tech-chip">YAML + JSON Config</span>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-title">Legende – Farben der Prozessschritte</div>
+    <div class="legend-items">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--blue-mid)"></div>Datei-Erkennung &amp; Trigger</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>OCR &amp; Textextraktion</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#7D3C98"></div>Bildvorverarbeitung</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>Regex-Annotierung &amp; Validierung</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--yellow)"></div>KI / LLM-Analyse</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--blue-light)"></div>Menschliche Interaktion</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--gray-dark)"></div>Export</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--blue-deep)"></div>ERP-Integration</div>
+    </div>
+  </div>
+
 </div>
 
-<footer>Invoice Reader · itonic · Stand Mai 2026 · Alle Daten bleiben lokal — kein Cloud-Dienst</footer>
+<footer>Invoice Reader Systemarchitektur - itonic - Stand Juni 2026 - Alle Daten bleiben lokal – kein Cloud-Dienst</footer>
 
 </body>
 </html>
